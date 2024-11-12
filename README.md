@@ -25,7 +25,8 @@ Welcome to the LIGHTSABERS Robot Code Repository for the FRC 2024 Season. This R
 First of all, I'm assuming that you are reading this README.md file from the "main" branch on the LIGHTSABERS Web-based GetHub site (i.e. the remote Github repositiory).  The "main" branch is the branch that holds the "competition" code.  This code should always compile and be deployable to the Robot on a moments notice.  So, do not develop new code in the "main" branch.  The first thing to do is to create a new code development branch by clicking on the "branch" icon at the top of this repository.
 ![image](https://user-images.githubusercontent.com/54441806/205994006-44c873f8-bac8-4605-8b4d-bd86b5a21ced.png)
 This will bring up a "branch" page.  You first click on "New Branch" button, then type in a name for the new Branch.  The name is usually representative of the type of "feature" that you plan to develop for the robot software (like "addGyro, or "updateSmartDashboard"), but for the rest of this discussion we will assume that you know ypur last name and the Branch Name you created is called "LastnameDev".  After selecting your development branch name, make sure that the "source" is set to <u><b> this year‘s current branch,</b></u> and then click "Create Branch".  
-![image](https://user-images.githubusercontent.com/54441806/205996651-fa7224c6-71c3-4abe-b60e-2d3e37ea0f4c.png)
+![image](![Screenshot 2024-11-11 191707](https://github.com/user-attachments/assets/d04ee24d-b81a-487e-8316-c1dc96915934)
+)
 The resulting "Overview" page will then show that there is an Active branch called "LastnameDev".  You can click on the "LastnameDev" branch and you will see that it has the same files as were in the "main" branch.
 ![image](https://user-images.githubusercontent.com/54441806/205998157-9fa5980c-fed6-4cf2-befc-6f007a0b72eb.png)
   
