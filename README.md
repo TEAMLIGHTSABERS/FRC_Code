@@ -85,11 +85,11 @@ Note: you do not need to Commit any binary files that are created when you Build
 
 After you Commit your changes they are stored in your local Git repository.  The "SYNC" button with the up arrow (it replaces the "Commit" button after you Commit the changes) will update the remote repository on the GitHub Website with your new changes.  At that point other team members can look at the changes you have made on the website. 
 
-You can then open one of the java source files in the project and examine its code.  This code probably will not build using the WPILib on your computer because you probably have not added 3rd party libaries required to run the devices that this version of the 2024_Robot_Code is using.  Read the FRC documation on installing [3rd party libraries](#3rd-party-libraries) found at:  https://docs.wpilib.org/en/stable/docs/software/vscode-overview/3rd-party-libraries.html#rd-party-libraries.
+You can then open one of the java source files in the project and examine its code.  This code probably will not build using the WPILib on your computer because you probably have not added 3rd party libaries required to run the devices that this version of the Robot_Code is using.  Read the FRC documation on installing [3rd party libraries](#3rd-party-libraries) found at:  https://docs.wpilib.org/en/stable/docs/software/vscode-overview/3rd-party-libraries.html#rd-party-libraries.
 
 Any files that you add or modify in this folder are added to the files to "Commit" to Git.  You can add these files to the "GitIgnore" file by right clicking on each and chosing the "GitIgnore" option.
 
-The 2024_Robot_Code in the Local Repository is now different from the Remote Repository on the Web.  For example: In the directory above, if you open the README.md file in a text editor (ex. wordpad), change the spelling of a word, and then save the file; GitHub Desktop will change to look like this:
+The Robot_Code in the Local Repository is now different from the Remote Repository on the Web.  For example: In the directory above, if you open the README.md file in a text editor (ex. wordpad), change the spelling of a word, and then save the file; GitHub Desktop will change to look like this:
 
 ![image](https://user-images.githubusercontent.com/54441806/206082745-758bfe6e-c9ea-4745-9dae-d1e5575a19e8.png)
 
