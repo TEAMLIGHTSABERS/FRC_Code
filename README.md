@@ -6,7 +6,7 @@ All Seasons of FRC for the LIGHTSABERS Robots Team
 [![Gradle](https://github.com/wpilibsuite/allwpilib/actions/workflows/gradle.yml/badge.svg?branch=main)](https://github.com/wpilibsuite/allwpilib/actions/workflows/gradle.yml)
 [![Java Documentation](https://img.shields.io/badge/documentation-java-orange)](https://github.wpilib.org/allwpilib/docs/development/java/)
 
-Welcome to the LIGHTSABERS Robot Code Repository for the FRC 2024 Season. This Repositiory Contains the steps for installing the Coding Enviroment and loading in last year's FRC Robot Code.
+Welcome to the LIGHTSABERS Robot Code Repository for the FRC. This Repositiory Contains the steps for installing the Coding Enviroment and loading in last year's FRC Robot Code.
 
 - [Preliminaries with Git](#preliminaries-with-git)
 - [Robot Home](#robot-home)
@@ -109,7 +109,7 @@ Read this page to get familiar with how to call the WPILib command from the comm
 
 # Creating a New Robot Project
   
-Eventually, a section called "Creating a New WPILib Project" is found toward the middle of the the Robot Program Page (https://docs.wpilib.org/en/stable/docs/software/vscode-overview/creating-robot-program.html).  Unless you are going to start from scratch and delete the 2024_Robot_Code folder, you should not need to create a "new" Project.  But if creating a new project from scratch is your intention (The 2024_Robot_Code had to come from somewhere.  Right?), then perform the tasks stated in Visual Studio Code documetation above. 
+Eventually, a section called "Creating a New WPILib Project" is found toward the middle of the the Robot Program Page (https://docs.wpilib.org/en/stable/docs/software/vscode-overview/creating-robot-program.html).  Unless you are going to start from scratch and delete the Robot_Code folder, you should not need to create a "new" Project.  But if creating a new project from scratch is your intention (The Robot_Code had to come from somewhere.  Right?), then perform the tasks stated in Visual Studio Code documetation above. 
 
 While doing these tasks, a "New Project Creator Window" will pop up.  Select the following on the first row:
 
@@ -118,7 +118,7 @@ Language:      java,
 Base:          Command Robot
 
 Other items on the creator page are filled in as:
-Base Folder:  {Drive Letter}:/Users/Public/GitHub
+Base Folder:  {Drive Letter}:/Users/Public/Public Documents/GitHub
 Use the "Select a new project folder" button to graphically select the Base Folder
 
 Project Name: {New_Project_Name},
@@ -159,10 +159,6 @@ In VS Code, use the "Manage Vendor Libraries > Manage Current Libraries" to show
 CTRE-Pheonix
 RevLib
 WPILib-New-Commands
-
-# Last Years Robot Code
-
-Last year's robot code is in the 2023_Robot_Code folder.  If you open the folder for 2023_Robot_Code folder in WPILib VS Code, you can examine that project.  That project will have many errors due to the fact that the 3rd party libraries have changed this year.  If you want it to build, code changes are needed to make it compatable with the 2024 3rd party libraries. 
 
 # Git Update
 
