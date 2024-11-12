@@ -126,7 +126,7 @@ Team Number:  3660.
 
 Then click on the "Generate Project" button.
 
-Visual Studio will now have a project created in the FRC_Code Folder called "{New_Project_Name}".
+Visual Studio will now have a project created in the GitHub Folder called "{New_Project_Name}".
 
 After creating the project in Visual Studio Code, continue reading to the webpage instructions to end of the page and click the "Next" button to continue to "libraries".
 
