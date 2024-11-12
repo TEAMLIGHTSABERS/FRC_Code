@@ -39,7 +39,7 @@ On the GitHub Webpage (i.e. the remote Git repositiory), there is a green button
 
 ![image](https://user-images.githubusercontent.com/54441806/206072601-60adb60e-19bf-4245-85d4-27e3497e33dd.png)
 ---------------------------------------------------------------------------------------------------------------
-If you are using the GetHub Desktop, you will need to select the storage location you created above and make sure that the URL is pointing to the FRC_2024 Online Repository before clicking Clone. 
+If you are using the GetHub Desktop, you will need to select the storage location you created above and make sure that the URL is pointing to the FRC_Code Online Repository before clicking Clone. 
 
 When GitHub Desktop opens, then it may open to the "main" branch.  If this is the case then you must switch it to the "LastnameDev" branch.
 
@@ -47,12 +47,12 @@ When GitHub Desktop opens, then it may open to the "main" branch.  If this is th
 
 This repository now exists locally on your computer at:
 
-"{Drive_Letter}:\Users\Public\GitHub\FRC_2024"
+"{Drive_Letter}:\Users\Public\Public Documents\GitHub\FRC_Code"
 
 
 # Robot Home
 
-The FRC_2024 folder on your computer (local repository) has this README file, a license file, a folder called "2023_Robot_Code" and another folder called "2024_Robot_Code".  The 2023_Robot_Code folder is provided as an example and a reference for last years Robot code.  All Robot code projects for this year will be created in the folder called "2024_Robot_Code".  Each of these folders represents a WPILib Java project.  
+The FRC_Code folder on your computer (local repository) has this README file, a license file, a folder called "2023_Robot_Code" and another folder called "2024_Robot_Code".  The 2023_Robot_Code folder is provided as an example and a reference for last years Robot code.  All Robot code projects for this year will be created in the folder called "2024_Robot_Code".  Each of these folders represents a WPILib Java project.  
 
 # Zero to Robot
 
@@ -76,7 +76,7 @@ Continue to the next page in the instructions and select the "Visual Studio Code
 
 # GitHub Revisited
 
-Start "WPILib VS Code" application and open the folder called "{Drive_Letter}:\Users\Public\GitHub\FRC_2024\2024_Robot_Code".  Before doing anything else select the "Source Control" icon on the left-hand wall of the WPILib Application.  This will change the left window pane to show GitHub Source control status and commands.  At the top of this pane, below "Source Control Repositories", you will see your current "local" repository (FRC_2024) and the current local "branch" ("main") for that repository.  Click on the branch and, at the bottom of the popup window, you will see your remote (on-line) development branch, which is called "Origin/LastnameDev
+Start "WPILib VS Code" application and open the folder called "{Drive_Letter}:\Users\Public\GitHub\FRC_Code\Robot_Code".  Before doing anything else select the "Source Control" icon on the left-hand wall of the WPILib Application.  This will change the left window pane to show GitHub Source control status and commands.  At the top of this pane, below "Source Control Repositories", you will see your current "local" repository (FRC_Code) and the current local "branch" ("main") for that repository.  Click on the branch and, at the bottom of the popup window, you will see your remote (on-line) development branch, which is called "Origin/LastnameDev
 ".  Select your remote development branch and the local branch will then change to be your development branch.  At this point any changes you make to the project are being made to your "development" branch code.  Your changes will not change the "main" branch competition code until you have completed your developement, tested it, and have approved it as ready for competition.
 
 While you can make code changes, test your builds, deploy to, and even run the robot from the code in your 2024_Robot_Code folder; you should save often.  Since you code is also managed by software source control, you should periodically commit your changes to source control (Git) using the "Commit" button on the Source Control pane.  When you "Commit" the changes, you need to provide a comment above it to be stored as a record of what was was changed in this "Commit" operation.  So you should "Commit" often enough to keep the Comment for what was changed small.
@@ -126,7 +126,7 @@ Team Number:  3660.
 
 Then click on the "Generate Project" button.
 
-Visual Studio will now have a project created in the FRC_2024 Folder called "{New_Project_Name}".
+Visual Studio will now have a project created in the FRC_Code Folder called "{New_Project_Name}".
 
 After creating the project in Visual Studio Code, continue reading to the webpage instructions to end of the page and click the "Next" button to continue to "libraries".
 
