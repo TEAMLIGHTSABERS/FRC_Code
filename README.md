@@ -39,9 +39,9 @@ On the GitHub Webpage (i.e. the remote Git repositiory), there is a green button
 
 ![image](https://user-images.githubusercontent.com/54441806/206072601-60adb60e-19bf-4245-85d4-27e3497e33dd.png)
 ---------------------------------------------------------------------------------------------------------------
-If you are using the GetHub Desktop, you will need to select the storage location you created above and make sure that the URL is pointing to the FRC_2024 Online Repository before clicking Clone. You can also download the Repository as a Zip file.  This will detach the Repository from this Online Git account.  Any updates that you make are private and cannot be pushed back to this account, which is where the "competition" code resides.   
+If you are using the GetHub Desktop, you will need to select the storage location you created above and make sure that the URL is pointing to the FRC_2024 Online Repository before clicking Clone. 
 
-When GitHub Desktop opens, then it will default to looking at the "main" branch.  Switch it to the "LastnameDev" branch.
+When GitHub Desktop opens, then it may open to the "main" branch.  If this is the case then you must switch it to the "LastnameDev" branch.
 
 ![image](https://user-images.githubusercontent.com/54441806/206074279-9abeab05-935d-456a-8e2c-fa2f417320b7.png)
 
