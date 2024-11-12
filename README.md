@@ -52,7 +52,7 @@ This repository now exists locally on your computer at:
 
 # Robot Home
 
-The FRC_Code folder on your computer (local repository) has this README file, a license file, a folder called "2023_Robot_Code" and another folder called "2024_Robot_Code".  The 2023_Robot_Code folder is provided as an example and a reference for last years Robot code.  All Robot code projects for this year will be created in the folder called "2024_Robot_Code".  Each of these folders represents a WPILib Java project.  
+The FRC_Code folder on your computer (local repository) has this README file, a license file, and another folder called "Robot_Code".  All Robot code projects for this year will be created in the folder called "2024_Robot_Code".  Each of these folders represents a WPILib Java project.  
 
 # Zero to Robot
 
