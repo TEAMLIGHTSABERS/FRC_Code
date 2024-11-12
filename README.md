@@ -26,17 +26,14 @@ First of all, I'm assuming that you are reading this README.md file from the "ma
 ![image](https://user-images.githubusercontent.com/54441806/205994006-44c873f8-bac8-4605-8b4d-bd86b5a21ced.png)
 This will bring up a "branch" page.  You first click on "New Branch" button, then type in a name for the new Branch.  The name is usually representative of the type of "feature" that you plan to develop for the robot software (like "addGyro, or "updateSmartDashboard"), but for the rest of this discussion we will assume that you know ypur last name and the Branch Name you created is called "LastnameDev".  After selecting your development branch name, make sure that the "source" is set to <u><b> this year‘s current branch,</b></u> and then click "Create Branch".  
 ![Screenshot 2024-11-11 191707](https://github.com/user-attachments/assets/d04ee24d-b81a-487e-8316-c1dc96915934)
-)
 The resulting "Overview" page will then show that there is an Active branch called "LastnameDev".  You can click on the "LastnameDev" branch and you will see that it has the same files as were in the "main" branch.
 ![image](https://user-images.githubusercontent.com/54441806/205998157-9fa5980c-fed6-4cf2-befc-6f007a0b72eb.png)
   
-At this point, I will assume that you are reading this README.md file from the "LastnameDev" branch.  You are now ready to setup your computer to receive the local repository of the FRC_2024 Code.  To avoid having this repository proliferate on your computer, it will be stored in common directory.  I recommend the Public User's workspace.  If you don't already have a "Git" folder on your computer, create a new one called "GitHub" on your computer in the Public User Documents folder.  This folder will hold all of your Git projects.  For the rest of this discussion, it is assumed that your "Git" folder is called "GitHub", if you already have a "Git" folder that is named differently then substitute your folder's name appropriately in the discussions below.
+At this point, I will assume that you are reading this README.md file from the "LastnameDev" branch.  You are now ready to setup your computer to receive the local repository of the FRC_Code.  If you don't already have a "Git" folder on your computer, create a new one called "GitHub" on your computer in the Public User Documents folder.  This folder will hold all of your Git projects.  For the rest of this discussion, it is assumed that your "Git" folder is called "GitHub", if you already have a "Git" folder that is named differently then substitute your folder's name appropriately in the discussions below.
   
-"{Drive_Letter}:\Users\Public\GitHub"
+"{Drive_Letter}:\Users\Public\Public Documents\GitHub"
 
-There are a couple of options for cloning the Online Repository locally on your computer:
-1.  (Recommended)  Use the GitHub Desktop (need to download "GitHub Desktop" and install it before proceding).
-2.  Download to a Zip file.
+Go to https://desktop.github.com/download/ to download Gethub Desktop (you need to download "GitHub Desktop" and install it before proceding).
    
 On the GitHub Webpage (i.e. the remote Git repositiory), there is a green button called "Code" above the top right-hand corner of this README.  Right click on this button and the various options for "cloneing" this repository are offered.
 
