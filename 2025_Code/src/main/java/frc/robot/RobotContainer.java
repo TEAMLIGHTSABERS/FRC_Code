@@ -16,7 +16,6 @@ import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.Constants.OIConstants;
-import frc.robot.Constants.OperatorConstants;
 import frc.robot.commands.Autos;
 import frc.robot.commands.DriveCommands;
 import frc.robot.subsystems.DriveSubsystem;
@@ -41,27 +40,6 @@ public class RobotContainer {
   private final IntakeSubsystem m_intake = new IntakeSubsystem();
   private final LauncherSubsystem m_launcher = new LauncherSubsystem();
   private final TurretSubsystem m_turret = new TurretSubsystem();
-/*
-  // Center position auto that shoots, goes to pick up another note, and then shoots again.
-  private final Command m_centerAuto = Autos.centerAuto(m_robotDrive, m_launcher, m_intake, m_turret);
-
-  // Center position auto that shoots, goes to pick up another note, and then shoots again.
-  private final Command m_redLeftAuto = Autos.redLeftAuto(m_robotDrive, m_launcher, m_intake, m_turret);
-
-  // Center position auto that shoots, goes to pick up another note, and then shoots again.
-  private final Command m_blueRightAuto = Autos.blueRightAuto(m_robotDrive, m_launcher, m_intake, m_turret);
-
-  // Straight Auto moves the robot directly out of the zone a distance of 2.5 m.
-  private final Command m_StraightAuto = DriveCommands.straightAutoCommand1(m_robotDrive, 2.5, 0);
-
-  // Test auto for Pathplanner; drives straight
-  private final Command m_testAuto = Autos.testAuto(m_robotDrive);
-
-   // A simple auto routine that drives forward a specified distance, and then stops.
-  private final Command m_leftAuto = Autos.leftAuto(m_robotDrive, m_launcher, m_intake, m_turret);
-
-  // A simple auto routine that drives forward a specified distance, and then stops.
-  private final Command m_rightAuto = Autos.rightAuto(m_robotDrive, m_launcher, m_intake, m_turret);*/
 
   // A chooser for autonomous commands
   //SendableChooser<Command> m_chooser = new SendableChooser<>();
@@ -69,7 +47,7 @@ public class RobotContainer {
 
   // Replace with CommandPS4Controller or CommandJoystick if needed
   private final XboxController m_driverController =
-      new XboxController(OperatorConstants.kDriverControllerPort);
+      new XboxController(OIConstants.kDriverControllerPort);
 
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
   public RobotContainer() {
@@ -80,8 +58,6 @@ public class RobotContainer {
 
     autoChooser = AutoBuilder.buildAutoChooser();
     SmartDashboard.putData("Auto Chooser", autoChooser);
-
-    SmartDashboard.putData("Launcher Wheel Test", m_launcher.testFlyWheels());
 
     // Configure the trigger bindings
     configureButtonBindings();
@@ -143,6 +119,7 @@ public class RobotContainer {
    * passing it to a
    * {@link JoystickButton}.
    */
+  
   private void configureButtonBindings() {
     // button to put swerve modules in an "x" configuration to hold position
     new JoystickButton(m_driverController, XboxController.Button.kLeftStick.value)

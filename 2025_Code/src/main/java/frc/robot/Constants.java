@@ -4,8 +4,6 @@
 
 package frc.robot;
 
-import com.revrobotics.CANSparkBase.IdleMode;
-
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
 import edu.wpi.first.math.trajectory.TrapezoidProfile;
@@ -25,10 +23,8 @@ import edu.wpi.first.math.util.Units;
  */
 public final class Constants {
 
-  public static class OperatorConstants {
-    public static final int kDriverControllerPort = 0;
-  }
 
+  /*2024 Constants
   public static final class Turret {
     public static final int kTurCanId = 5;
     public static final int kTurCurrentLimit = 47;
@@ -111,7 +107,7 @@ public final class Constants {
 
     public static final int kPLTSCanId = 8;
     public static final int kPRTSCanId = 9;
-  }
+  }*/
   
   public static final class DriveConstants {
     // Driving Parameters - Note that these are not the maximum capable speeds of
@@ -152,17 +148,6 @@ public final class Constants {
     public static final int kRearRightTurningCanId = 18;
 
 
-    /* Original Motor Settings
-    public static final int kFrontLeftDrivingCanId = 13;
-    public static final int kRearLeftDrivingCanId = 15;
-    public static final int kFrontRightDrivingCanId = 11;
-    public static final int kRearRightDrivingCanId = 17;
-
-    public static final int kFrontLeftTurningCanId = 14;
-    public static final int kRearLeftTurningCanId = 16;
-    public static final int kFrontRightTurningCanId = 12;
-    public static final int kRearRightTurningCanId = 18; */
-
     public static final boolean kGyroReversed = false;
     
   }
@@ -173,9 +158,9 @@ public final class Constants {
     // robot that drives faster).
     public static final int kDrivingMotorPinionTeeth = 13;
 
-    // Invert the turning encoder, since the output shaft rotates in the opposite direction of
+    /*// Invert the turning encoder, since the output shaft rotates in the opposite direction of
     // the steering motor in the MAXSwerve Module.
-    public static final boolean kTurningEncoderInverted = true;
+    public static final boolean kTurningEncoderInverted = true;*/
 
     // Calculations required for driving motor conversion factors and feed forward
     public static final double kDrivingMotorFreeSpeedRps = NeoMotorConstants.kFreeSpeedRpm / 60;
@@ -186,7 +171,7 @@ public final class Constants {
     public static final double kDriveWheelFreeSpeedRps = (kDrivingMotorFreeSpeedRps * kWheelCircumferenceMeters)
         / kDrivingMotorReduction;
 
-    public static final double kDrivingEncoderPositionFactor = (kWheelDiameterMeters * Math.PI)
+    /*public static final double kDrivingEncoderPositionFactor = (kWheelDiameterMeters * Math.PI)
         / kDrivingMotorReduction; // meters
     public static final double kDrivingEncoderVelocityFactor = ((kWheelDiameterMeters * Math.PI)
         / kDrivingMotorReduction) / 60.0; // meters per second
@@ -215,7 +200,7 @@ public final class Constants {
     public static final IdleMode kTurningMotorIdleMode = IdleMode.kBrake;
 
     public static final int kDrivingMotorCurrentLimit = 50; // amps
-    public static final int kTurningMotorCurrentLimit = 20; // amps
+    public static final int kTurningMotorCurrentLimit = 20; // amps*/
   }
 
   public static final class OIConstants {
