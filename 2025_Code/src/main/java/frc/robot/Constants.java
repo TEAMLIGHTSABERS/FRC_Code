@@ -19,6 +19,21 @@ import edu.wpi.first.math.util.Units;
  */
 public final class Constants {
 
+  
+  //Constants for the Elevator Subsystem
+  public static final class ElevatorSubsystemConstants {
+    public static final int kElevatorLeadCanId = 2; //need to change
+    public static final int kElevatorFollowCanId = 3; //need to change
+
+    public static final class ElevatorSetpoints {
+      public static final int kFeederStation = 0;
+      public static final int kLevel1 = 0;
+      public static final int kLevel2 = 0;
+      public static final int kLevel3 = 100;
+      public static final int kLevel4 = 150;
+    }
+  }
+  
   public static final class DriveConstants {
     // Driving Parameters - Note that these are not the maximum capable speeds of
     // the robot, rather the allowed maximum speeds

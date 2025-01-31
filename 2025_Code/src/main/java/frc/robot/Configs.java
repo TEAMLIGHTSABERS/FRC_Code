@@ -5,12 +5,42 @@ import com.revrobotics.spark.config.ClosedLoopConfig.FeedbackSensor;
 import com.revrobotics.spark.config.SparkBaseConfig.IdleMode;
 
 import frc.robot.Constants.ModuleConstants;
+import frc.robot.Constants.ElevatorSubsystemConstants;
 
 public final class Configs {
+        
+    public static final class ElevatorSubsystem {
+        public static final SparkMaxConfig l_elevatorConfig = new SparkMaxConfig();
+        public static final SparkMaxConfig f_elevatorConfig = new SparkMaxConfig();
+
+        static {
+         // Configure basic settings of the elevator motors
+         l_elevatorConfig.idleMode(IdleMode.kBrake).smartCurrentLimit(50).voltageCompensation(12);
+         f_elevatorConfig.idleMode(IdleMode.kBrake).follow(ElevatorSubsystemConstants.kElevatorLeadCanId, true).inverted(true).smartCurrentLimit(50).voltageCompensation(12);
+
+         /*
+         * Configure the closed loop controller. We want to make sure we set the
+         * feedback sensor as the primary encoder.
+         */
+         l_elevatorConfig 
+                .closedLoop
+                .feedbackSensor(FeedbackSensor.kPrimaryEncoder)
+                // Set PID values for position control
+                .p(0.1)
+                .outputRange(-1, 1)
+                .maxMotion
+                // Set MAXMotion parameters for position control
+                .maxVelocity(4200)
+                .maxAcceleration(6000)
+                .allowedClosedLoopError(0.5);
+        }
+
+        }
+
     public static final class MAXSwerveModule {
         public static final SparkMaxConfig drivingConfig = new SparkMaxConfig();
         public static final SparkMaxConfig turningConfig = new SparkMaxConfig();
-
+        
         static {
             // Use module constants to calculate conversion factors and feed forward gain.
             double drivingFactor = ModuleConstants.kWheelDiameterMeters * Math.PI
