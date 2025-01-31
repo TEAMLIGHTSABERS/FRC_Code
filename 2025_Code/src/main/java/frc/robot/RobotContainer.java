@@ -10,23 +10,32 @@ import com.pathplanner.lib.commands.PathPlannerAuto;
 import com.pathplanner.lib.path.PathPlannerPath; //Only needed for on-the-fly pathplanning
 
 import edu.wpi.first.math.MathUtil;
+import edu.wpi.first.math.controller.PIDController;
+import edu.wpi.first.math.controller.ProfiledPIDController;
+import edu.wpi.first.math.geometry.Pose2d;
+import edu.wpi.first.math.geometry.Rotation2d;
+import edu.wpi.first.math.geometry.Translation2d;
+import edu.wpi.first.math.trajectory.Trajectory;
+import edu.wpi.first.math.trajectory.TrajectoryConfig;
+import edu.wpi.first.math.trajectory.TrajectoryGenerator;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import frc.robot.Constants.AutoConstants;
+import frc.robot.Constants.DriveConstants;
 import frc.robot.Constants.OIConstants;
 import frc.robot.commands.Autos;
 import frc.robot.commands.DriveCommands;
 import frc.robot.subsystems.DriveSubsystem;
-import frc.robot.subsystems.IntakeSubsystem;
-import frc.robot.subsystems.LauncherSubsystem;
-import frc.robot.subsystems.TurretSubsystem;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.RunCommand;
+import edu.wpi.first.wpilibj2.command.SwerveControllerCommand;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
+import java.util.List;
 
 /**
  * This class is where the bulk of the robot should be declared. Since Command-based is a
@@ -37,9 +46,9 @@ import edu.wpi.first.wpilibj2.command.button.Trigger;
 public class RobotContainer {
   // The robot's subsystems and commands are defined here...
   private final DriveSubsystem m_robotDrive = new DriveSubsystem();
-  private final IntakeSubsystem m_intake = new IntakeSubsystem();
+  /*private final IntakeSubsystem m_intake = new IntakeSubsystem();
   private final LauncherSubsystem m_launcher = new LauncherSubsystem();
-  private final TurretSubsystem m_turret = new TurretSubsystem();
+  private final TurretSubsystem m_turret = new TurretSubsystem();*/
 
   // A chooser for autonomous commands
   //SendableChooser<Command> m_chooser = new SendableChooser<>();
@@ -52,9 +61,9 @@ public class RobotContainer {
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
   public RobotContainer() {
 
-    NamedCommands.registerCommand("marker1", Commands.print("Passed marker 1"));
+    /*NamedCommands.registerCommand("marker1", Commands.print("Passed marker 1"));
     NamedCommands.registerCommand("marker2", Commands.print("Passed marker 2"));
-    NamedCommands.registerCommand("print hello", Commands.print("hello"));
+    NamedCommands.registerCommand("print hello", Commands.print("hello"));*/
 
     autoChooser = AutoBuilder.buildAutoChooser();
     SmartDashboard.putData("Auto Chooser", autoChooser);
@@ -71,10 +80,10 @@ public class RobotContainer {
                 -MathUtil.applyDeadband((m_driverController).getLeftY(), OIConstants.kDriveDeadband),
                 -MathUtil.applyDeadband((m_driverController).getLeftX(), OIConstants.kDriveDeadband),
                 -MathUtil.applyDeadband((m_driverController).getRightX(), OIConstants.kDriveDeadband),
-                true, true),
+                true),
             m_robotDrive));
 
-    m_intake.setDefaultCommand(new RunCommand(() -> m_intake.setPower(0.0, 0.0), m_intake));
+   /*m_intake.setDefaultCommand(new RunCommand(() -> m_intake.setPower(0.0, 0.0), m_intake));
 
     // configure the launcher to stop when no other command is running
     m_launcher.setDefaultCommand(new RunCommand(() -> m_launcher.stopLauncher(), m_launcher));
@@ -82,7 +91,7 @@ public class RobotContainer {
     m_turret.setDefaultCommand(new RunCommand(() -> m_turret.driveWench(
         (m_driverController).getRightBumperPressed(),
         ((m_driverController).getRightTriggerAxis() > Constants.OIConstants.kTriggerButtonThreshold)),
-        m_turret));
+        m_turret));*/
 /*
     // Add commands to the autonomous command chooser
     m_chooser.setDefaultOption("Straight Auto", m_StraightAuto);
@@ -125,7 +134,7 @@ public class RobotContainer {
     new JoystickButton(m_driverController, XboxController.Button.kLeftStick.value)
         .whileTrue(new RunCommand(() -> m_robotDrive.setX(), m_robotDrive));
 
-    // Turret Controls ----------------------------------------------------------
+/*    // Turret Controls ----------------------------------------------------------
     // Right Trigger will Raise the Launcher elevation.    
 //    new Trigger(
 //            () -> ((XboxController) m_driverController).getRightTriggerAxis()
@@ -157,7 +166,7 @@ public class RobotContainer {
     
     // "X" Button will run the Launcher Flywheels for 5 seconds
     new JoystickButton(m_driverController, XboxController.Button.kX.value)
-        .onTrue(m_launcher.testFlyWheels());
+        .onTrue(m_launcher.testFlyWheels());*/
 
     SmartDashboard.putData("New Auto", new PathPlannerAuto("New Auto"));
   }

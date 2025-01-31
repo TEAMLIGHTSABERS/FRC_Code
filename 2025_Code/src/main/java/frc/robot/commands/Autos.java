@@ -6,9 +6,6 @@ package frc.robot.commands;
 
 import frc.robot.Constants;
 import frc.robot.subsystems.DriveSubsystem;
-import frc.robot.subsystems.IntakeSubsystem;
-import frc.robot.subsystems.LauncherSubsystem;
-import frc.robot.subsystems.TurretSubsystem;
 
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
@@ -29,7 +26,7 @@ public final class Autos {
   )
   {
     return Commands.sequence(
-      // This command assumes that the robot is aligned to 0 heading along +x axis pointing towards the opposing
+      // This command assumes that the robot is aligned to 0 heading alon+x axis pointing towards the opposing
       // Alliance station and the Robot is rotated to 180 degrees before the team leaves the field.
       // Starting position (0, 0, 180).
       TurretCommands.raiseTurretCommand(turretSys, Constants.Turret.kHighShotID),   // Raise Turret to Speaker Shot Position
