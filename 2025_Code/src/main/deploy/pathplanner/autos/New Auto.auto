@@ -7,19 +7,7 @@
         {
           "type": "path",
           "data": {
-            "pathName": "New Path"
-          }
-        },
-        {
-          "type": "path",
-          "data": {
-            "pathName": "Slide Left"
-          }
-        },
-        {
-          "type": "path",
-          "data": {
-            "pathName": "Right Turn"
+            "pathName": "Sample Path"
           }
         }
       ]

@@ -129,34 +129,29 @@ public class ElevatorSubsystem extends SubsystemBase {
     
         /** Zero the elevator encoder when the limit switch is pressed. */
         private void zeroElevatorOnLimitSwitch() {
-        if (!wasResetByLimit && elevatorMotor.getReverseLimitSwitch().isPressed()) {
+        if (!wasResetByLimit && l_elevatorMotor.getReverseLimitSwitch().isPressed()) {
             // Zero the encoder only when the limit switch is switches from "unpressed" to "pressed" to
             // prevent constant zeroing while pressed
             elevatorEncoder.setPosition(0);
             wasResetByLimit = true;
-        } else if (!elevatorMotor.getReverseLimitSwitch().isPressed()) {
+        } else if (!l_elevatorMotor.getReverseLimitSwitch().isPressed()) {
             wasResetByLimit = false;
         }
         }
     
-        /** Zero the arm and elevator encoders when the user button is pressed on the roboRIO. */
+        /** Zero the elevator encoders when the user button is pressed on the roboRIO. */
         private void zeroOnUserButton() {
         if (!wasResetByButton && RobotController.getUserButton()) {
             // Zero the encoders only when button switches from "unpressed" to "pressed" to prevent
             // constant zeroing while pressed
             wasResetByButton = true;
-            armEncoder.setPosition(0);
+            //armEncoder.setPosition(0);
             elevatorEncoder.setPosition(0);
         } else if (!RobotController.getUserButton()) {
             wasResetByButton = false;
         }
         }
-    
-        /** Set the intake motor power in the range of [-1, 1]. */
-        private void setIntakePower(double power) {
-        intakeMotor.set(power);
-        }
-    
+     
         /**
          * Command to set the subsystem setpoint. This will set the arm and elevator to their predefined
          * positions for the given setpoint.
@@ -166,46 +161,47 @@ public class ElevatorSubsystem extends SubsystemBase {
             () -> {
                 switch (setpoint) {
                 case kFeederStation:
-                    armCurrentTarget = ArmSetpoints.kFeederStation;
+                    //armCurrentTarget = ArmSetpoints.kFeederStation;
                     elevatorCurrentTarget = ElevatorSetpoints.kFeederStation;
                     break;
                 case kLevel1:
-                    armCurrentTarget = ArmSetpoints.kLevel1;
+                    //armCurrentTarget = ArmSetpoints.kLevel1;
                     elevatorCurrentTarget = ElevatorSetpoints.kLevel1;
                     break;
                 case kLevel2:
-                    armCurrentTarget = ArmSetpoints.kLevel2;
+                    //armCurrentTarget = ArmSetpoints.kLevel2;
                     elevatorCurrentTarget = ElevatorSetpoints.kLevel2;
                     break;
                 case kLevel3:
-                    armCurrentTarget = ArmSetpoints.kLevel3;
+                    //armCurrentTarget = ArmSetpoints.kLevel3;
                     elevatorCurrentTarget = ElevatorSetpoints.kLevel3;
                     break;
                 case kLevel4:
-                    armCurrentTarget = ArmSetpoints.kLevel4;
+                    //armCurrentTarget = ArmSetpoints.kLevel4;
                     elevatorCurrentTarget = ElevatorSetpoints.kLevel4;
                     break;
                 }
             });
         }
     
+        
         /**
          * Command to run the intake motor. When the command is interrupted, e.g. the button is released,
          * the motor will stop.
          */
-        public Command runIntakeCommand() {
+        /*public Command runIntakeCommand() {
         return this.startEnd(
             () -> this.setIntakePower(IntakeSetpoints.kForward), () -> this.setIntakePower(0.0));
-        }
+        }*/
     
         /**
          * Command to reverses the intake motor. When the command is interrupted, e.g. the button is
          * released, the motor will stop.
          */
-        public Command reverseIntakeCommand() {
+        /*public Command reverseIntakeCommand() {
         return this.startEnd(
             () -> this.setIntakePower(IntakeSetpoints.kReverse), () -> this.setIntakePower(0.0));
-        }
+        }*/
     
         @Override
         public void periodic() {
@@ -214,13 +210,13 @@ public class ElevatorSubsystem extends SubsystemBase {
         zeroOnUserButton();
     
         // Display subsystem values
-        SmartDashboard.putNumber("Coral/Arm/Target Position", armCurrentTarget);
-        SmartDashboard.putNumber("Coral/Arm/Actual Position", armEncoder.getPosition());
+        //SmartDashboard.putNumber("Coral/Arm/Target Position", armCurrentTarget);
+       // SmartDashboard.putNumber("Coral/Arm/Actual Position", armEncoder.getPosition());
         SmartDashboard.putNumber("Coral/Elevator/Target Position", elevatorCurrentTarget);
         SmartDashboard.putNumber("Coral/Elevator/Actual Position", elevatorEncoder.getPosition());
-        SmartDashboard.putNumber("Coral/Intake/Applied Output", intakeMotor.getAppliedOutput());
+        //SmartDashboard.putNumber("Coral/Intake/Applied Output", intakeMotor.getAppliedOutput());
     
-        // Update mechanism2d
+        /*// Update mechanism2d
         m_elevatorMech2d.setLength(
             SimulationRobotConstants.kPixelsPerMeter * SimulationRobotConstants.kMinElevatorHeightMeters
                 + SimulationRobotConstants.kPixelsPerMeter
@@ -233,15 +229,15 @@ public class ElevatorSubsystem extends SubsystemBase {
                     + Units.rotationsToDegrees(
                         armEncoder.getPosition() / SimulationRobotConstants.kArmReduction))
                 - 90 // subtract 90 degrees to account for the elevator
-            );
+            );*/
         }
     
         /** Get the current drawn by each simulation physics model */
-        public double getSimulationCurrentDraw() {
+        /*public double getSimulationCurrentDraw() {
         return m_elevatorSim.getCurrentDrawAmps() + m_armSim.getCurrentDrawAmps();
-        }
+        }*/
     
-        @Override
+        /*@Override
         public void simulationPeriodic() {
         // In this method, we update our simulation of what our elevator is doing
         // First, we set our "inputs" (voltages)
@@ -270,5 +266,5 @@ public class ElevatorSubsystem extends SubsystemBase {
             0.02);
     
         // SimBattery is updated in Robot.java
-        }
+        }*/
 }

@@ -3,7 +3,7 @@ package frc.robot;
 import com.revrobotics.spark.config.SparkMaxConfig;
 import com.revrobotics.spark.config.ClosedLoopConfig.FeedbackSensor;
 import com.revrobotics.spark.config.SparkBaseConfig.IdleMode;
-
+import com.revrobotics.spark.config.LimitSwitchConfig.Type;
 import frc.robot.Constants.ModuleConstants;
 import frc.robot.Constants.ElevatorSubsystemConstants;
 
@@ -18,6 +18,17 @@ public final class Configs {
          l_elevatorConfig.idleMode(IdleMode.kBrake).smartCurrentLimit(50).voltageCompensation(12);
          f_elevatorConfig.idleMode(IdleMode.kBrake).follow(ElevatorSubsystemConstants.kElevatorLeadCanId, true).inverted(true).smartCurrentLimit(50).voltageCompensation(12);
 
+         /*
+         * Configure the reverse limit switch for the elevator. By enabling the limit switch, this
+         * will prevent any actuation of the elevator in the reverse direction if the limit switch is
+         * pressed.
+         */
+         l_elevatorConfig
+                .limitSwitch
+                .reverseLimitSwitchEnabled(true)
+                .reverseLimitSwitchType(Type.kNormallyOpen);
+
+         
          /*
          * Configure the closed loop controller. We want to make sure we set the
          * feedback sensor as the primary encoder.

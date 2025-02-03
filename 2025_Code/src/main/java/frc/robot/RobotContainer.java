@@ -13,6 +13,8 @@ import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import frc.robot.Constants.OIConstants;
 import frc.robot.subsystems.DriveSubsystem;
+import frc.robot.subsystems.ElevatorSubsystem;
+import frc.robot.subsystems.ElevatorSubsystem.Setpoint;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
@@ -32,6 +34,7 @@ import java.util.List;
 public class RobotContainer {
   // The robot's subsystems
   private final DriveSubsystem m_robotDrive = new DriveSubsystem();
+  private final ElevatorSubsystem m_elevatorSubSystem = new ElevatorSubsystem();
   
   // A chooser for autonomous commands
   //SendableChooser<Command> m_chooser = new SendableChooser<>();
@@ -47,6 +50,8 @@ public class RobotContainer {
     autoChooser = AutoBuilder.buildAutoChooser();
     SmartDashboard.putData("Auto Chooser", autoChooser);
 
+    SmartDashboard.putData("New Auto", new PathPlannerAuto("New Auto"));
+
     // Configure the button bindings
     configureButtonBindings();
 
@@ -57,14 +62,11 @@ public class RobotContainer {
         new RunCommand(
             () ->
                 m_robotDrive.drive(
-                    -MathUtil.applyDeadband(
-                        m_driverController.getLeftY(), OIConstants.kDriveDeadband),
-                    -MathUtil.applyDeadband(
-                        m_driverController.getLeftX(), OIConstants.kDriveDeadband),
-                    -MathUtil.applyDeadband(
-                        m_driverController.getRightX(), OIConstants.kDriveDeadband),
+                    -MathUtil.applyDeadband(m_driverController.getLeftY(), OIConstants.kDriveDeadband), 
+                    -MathUtil.applyDeadband(m_driverController.getLeftX(), OIConstants.kDriveDeadband),
+                    -MathUtil.applyDeadband(m_driverController.getRightX(), OIConstants.kDriveDeadband),
                     true),
-            m_robotDrive));  
+                    m_robotDrive));  
   }
 
   /**
@@ -80,8 +82,28 @@ public class RobotContainer {
     // Start Button -> Zero swerve heading
     m_driverController.start().onTrue(m_robotDrive.zeroHeadingCommand());
 
-    SmartDashboard.putData("New Auto", new PathPlannerAuto("New Auto"));
+    // B Button -> Elevator/Arm to human player position, set ball intake to stow
+    // when idle
+    m_driverController
+        .b()
+        .onTrue(
+            m_elevatorSubSystem
+                .setSetpointCommand(Setpoint.kFeederStation)
+                //.alongWith(m_algaeSubsystem.stowCommand())
+                );
+
+    // A Button -> Elevator/Arm to level 2 position
+    m_driverController.a().onTrue(m_elevatorSubSystem.setSetpointCommand(Setpoint.kLevel2));
+
+    // X Button -> Elevator/Arm to level 3 position
+    m_driverController.x().onTrue(m_elevatorSubSystem.setSetpointCommand(Setpoint.kLevel3));
+
+    // Y Button -> Elevator/Arm to level 4 position
+    m_driverController.y().onTrue(m_elevatorSubSystem.setSetpointCommand(Setpoint.kLevel4));
+ 
   }
+
+  
 
   /**
    * Use this to pass the autonomous command to the main {@link Robot} class.
