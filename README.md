@@ -22,14 +22,18 @@ Welcome to the LIGHTSABERS Robot Code Repository for the FRC. This Repositiory C
 
 # Preliminaries with Git
 
-First of all, I'm assuming that you are reading this README.md file from the "main" branch on the LIGHTSABERS Web-based GetHub site (i.e. the remote Github repositiory).  The "main" branch is the branch that holds the "competition" code.  This code should always compile and be deployable to the Robot on a moments notice.  So, do not develop new code in the "main" branch.  The first thing to do is to create a new code development branch by clicking on the "branch" icon at the top of this repository.
-![image](https://user-images.githubusercontent.com/54441806/205994006-44c873f8-bac8-4605-8b4d-bd86b5a21ced.png)
-This will bring up a "branch" page.  You first click on "New Branch" button, then type in a name for the new Branch.  The name is usually representative of the type of "feature" that you plan to develop for the robot software (like "addGyro, or "updateSmartDashboard"), but for the rest of this discussion we will assume that you know ypur last name and the Branch Name you created is called "LastnameDev".  After selecting your development branch name, make sure that the "source" is set to <u><b> this year‘s current branch,</b></u> and then click "Create Branch".  
+First of all, I'm assuming that you are reading this README.md file from the "main" branch on the LIGHTSABERS Web-based GetHub site (i.e. the remote Github repositiory).  To work with FRC Code, understand of the GitHub architecture is needed:
+
+Our Github FRC Code repository has an architectural tree, starting at the main branch.  Conceptually our code "tree" has three branch levels: The "main" level is for the WPILib Compiler and these instructions.  There is only one "main" level branch.  The WPILib Compiler is updated periodically on the "main" branch.  Every year the team removes the WPILib Compiler and Reinstalls the new year's WPILib Compiler on the "main" branch.
+
+The 2nd level of our code architecture is the "Year" level.  At the "Year" level, there numerous branches for each year's Robot Code.  Each branch (for example "2025") has the Robot Code that is used at Competition.  The current year's branch should already exist. The first thing to do is change to this year's branch code on GitHub.  Click on the arrow next to the branch field.  This will show a pull down for all of the year branches.  Choose this year's branch and click "ok".  You are now in the Robot Code branch for the current year's Competition robot. This code should always compile and be deployable to the Robot during the competition.  So, do not develop new code in this year's branch.  
+
+The 3rd level of the code archetecture is the "Development" level.  From this year's branch new branch's can be created for developing new code for this year's robot.  So the first thing to do is to create a new code development branch by clicking on the "branch" icon at the top of this repository.  ![image](https://user-images.githubusercontent.com/54441806/205994006-44c873f8-bac8-4605-8b4d-bd86b5a21ced.png)  This will bring up a "branch" page.  You first click on "New Branch" button, then type in a name for the new Branch.  The name is usually representative of the type of "feature" that you plan to develop for the robot software (like "addGyro, or "updateSmartDashboard"), but for the rest of this discussion we will assume that the Branch Name created is called "MyDev".  After selecting the "MyDev" development branch name, make sure that the "source" is set to <u><b> this year‘s current branch,</b></u> and then click "Create Branch".  
 ![Screenshot 2024-11-11 191707](https://github.com/user-attachments/assets/d04ee24d-b81a-487e-8316-c1dc96915934)
-The resulting "Overview" page will then show that there is an Active branch called "LastnameDev".  You can click on the "LastnameDev" branch and you will see that it has the same files as were in the "main" branch.
+The resulting "Overview" page will then show that there is an Active branch called "MyDev".  You can click on the "MyDev" branch and you will see that it has the same files as were in the "main" branch.
 ![image](https://user-images.githubusercontent.com/54441806/205998157-9fa5980c-fed6-4cf2-befc-6f007a0b72eb.png)
   
-At this point, I will assume that you are reading this README.md file from the "LastnameDev" branch.  You are now ready to setup your computer to receive the local repository of the FRC_Code.  If you don't already have a "Git" folder on your computer, create a new one called "GitHub" on your computer in the Public User Documents folder.  This folder will hold all of your Git projects.  For the rest of this discussion, it is assumed that your "Git" folder is called "GitHub", if you already have a "Git" folder that is named differently then substitute your folder's name appropriately in the discussions below.
+At this point, I will assume that you are reading this README.md file from the "MyDev" branch.  You are now ready to setup your computer to receive the local repository of the FRC_Code.  If you don't already have a "Git" folder on your computer, create a new one called "GitHub" on your computer in the Public User Documents folder.  This folder will hold all of your Git projects.  For the rest of this discussion, it is assumed that your "Git" folder is called "GitHub", if you already have a "Git" folder that is named differently then substitute your folder's name appropriately in the discussions below.
   
 "{Drive_Letter}:\Users\Public\Public Documents\GitHub"
 
@@ -41,7 +45,7 @@ On the GitHub Webpage (i.e. the remote Git repositiory), there is a green button
 ---------------------------------------------------------------------------------------------------------------
 If you are using the GetHub Desktop, you will need to select the storage location you created above and make sure that the URL is pointing to the FRC_Code Online Repository before clicking Clone. 
 
-When GitHub Desktop opens, then it may open to the "main" branch.  If this is the case then you must switch it to the "LastnameDev" branch.
+When GitHub Desktop opens, then it may open to the "main" branch.  If this is the case, then you must switch to this year's branch, and then switch to the "MyDev" branch.
 
 ![image](https://user-images.githubusercontent.com/54441806/206074279-9abeab05-935d-456a-8e2c-fa2f417320b7.png)
 
@@ -52,7 +56,7 @@ This repository now exists locally on your computer at:
 
 # Robot Home
 
-The FRC_Code folder on your computer (local repository) has this README file, a license file, and another folder called "Robot_Code".  All Robot code projects for this year will be created in the folder called "2024_Robot_Code".  Each of these folders represents a WPILib Java project.  
+The FRC_Code folder on your computer (local repository) has this README file, a license file, and another folder called "Robot_Code".  All Robot code projects for this year will be created in the folder called "Robot_Code".  
 
 # Zero to Robot
 
@@ -165,12 +169,12 @@ WPILib-New-Commands
 Remember to select your developement branch for Source Control and to save and "Commit" often.  Push the change to the remote repository when finished by clicking on the "Push Origin" button on the top (right side) of the GitHub Desktop window or by sync'ing in the WPILib Source Control pane. Before "pull"ing new changes into the "main" branch, the Drive Team must be informed that the changes are being added to the competition code.  When informing the Drive Team, be sure to describe how the changes affect the operation of the Robot.
 
 ## Check That "LastnameDev" is Ready to Be Delivered
-After you have tested your development code and you feel that the code is good enough for competition, the next step is to check for any changes that have been made on the "main" branch while you were devloping your code.  To do this, make a "pull" request in GitHub Web.  The request is to pull the changes from the "main" branch into your "LastnameDev" Branch.  If there are no changes identified in this pull request, then "LastnameDev" branch is ready to be delivered.  Skip to [Deliver Code to Main Branch](##Deliver_Code_to_Main_Branch).
+After you have tested your development code and you feel that the code is good enough for competition, the next step is to check for any changes that have been made on the this year's branch while you were devloping your code.  To do this, make a "pull" request in GitHub Web.  The request is to pull the changes from the {this year's} branch into your "MyDev" Branch.  If there are no changes identified in this pull request, then "MyDev" branch is ready to be delivered.  Skip to [Deliver Code to Main Branch](##Deliver_Code_to_Main_Branch).
 
-If the "pull" request from the "main" branch to "LastnameDev" branch shows that changes have been made, then another developer has delivered changes to the competition code since "LastnameDev started implementing and testing. To prevent overwriting delivered changes, all of these changes from this request must be accepted into the "LastnameDev" branch.  When these changes are accepted, it is possible that they will conflict with, or break, the code that is currently in the "jdoeDev" branch.  Check that the code in "LastnameDev" still builds and test it before repeating the this process.  Repeat this process until the "LastnameDev" branch ready to be delivered, as described above.
+If the "pull" request from the {this year's} branch to "MyDev" branch shows that changes have been made, then another developer has delivered changes to the competition code since "MyDev started implementing and testing. To prevent overwriting delivered changes, all of these changes from this request must be accepted into the "MyDev" branch.  When these changes are accepted, it is possible that they will conflict with, or break, the code that is currently in the "MyDev" branch.  Check that the code in "MyDev" still builds and test it before repeating the this process.  Repeat this process until the "MyDev" branch ready to be delivered, as described above.
 
 ## Deliver Code to Main Branch
-After determining that the "LastnameDev" branch is ready to be delivered, a "pull" request to pull the changes from "LastnameDev" branch into the "main" branch can be made and there should be no conflict.  After you have delivered (merged) the code from the "LastnameDev" Branch into the Main, you should test the "main" code on the robot.  If it works as planned, then the "LastnameDev" Branch can be deleted.
+After determining that the "MyDev" branch is ready to be delivered, a "pull" request to pull the changes from "MyDev" branch into the {this year's} branch can be made and there should be no conflict.  After you have delivered (merged) the code from the "MyDev" Branch into the {this year's) branch, you should test the code from {this year's} branch on the robot.  If it works as planned, then the "MyDev" Branch can be deleted.
 
 # Git Again
 
