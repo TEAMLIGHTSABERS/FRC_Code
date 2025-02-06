@@ -47,11 +47,11 @@ On the GitHub Webpage (i.e. the remote Git repositiory), there is a green button
 ---------------------------------------------------------------------------------------------------------------
 If you are using the GetHub Desktop, you will need to select the storage location you created above and make sure that the URL is pointing to the FRC_Code Online Repository before clicking Clone. 
 
-When GitHub Desktop opens, then it may open to the "main" branch.  If this is the case, then you must switch to this year's branch, and then switch to the "MyDev" branch.
+When GitHub Desktop opens, then it may open to the "main" branch.  If this is the case, then you must switch to the "MyDev" branch before continuing.
 
 ![image](https://user-images.githubusercontent.com/54441806/206074279-9abeab05-935d-456a-8e2c-fa2f417320b7.png)
 
-This repository now exists locally on your computer at:
+The code repository now exists locally on your computer at:
 
 "{Drive_Letter}:\Users\Public\Public Documents\GitHub\FRC_Code"
 
