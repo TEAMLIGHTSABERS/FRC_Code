@@ -83,14 +83,9 @@ public class RobotContainer {
     m_driverController.start().onTrue(m_robotDrive.zeroHeadingCommand());
 
     // B Button -> Elevator/Arm to human player position, set ball intake to stow
-    // when idle
+    // when idle    
     m_driverController
-        .b()
-        .onTrue(
-            m_elevatorSubSystem
-                .setSetpointCommand(Setpoint.kFeederStation)
-                //.alongWith(m_algaeSubsystem.stowCommand())
-                );
+        .b().onTrue(m_elevatorSubSystem.setSetpointCommand(Setpoint.kFeederStation));
 
     // A Button -> Elevator/Arm to level 2 position
     m_driverController.a().onTrue(m_elevatorSubSystem.setSetpointCommand(Setpoint.kLevel2));
@@ -100,10 +95,15 @@ public class RobotContainer {
 
     // Y Button -> Elevator/Arm to level 4 position
     m_driverController.y().onTrue(m_elevatorSubSystem.setSetpointCommand(Setpoint.kLevel4));
+
+    // Right Trigger -> Elevator Down
+    m_driverController.rightTrigger(OIConstants.kTriggerButtonThreshold).whileTrue(m_elevatorSubSystem.elevatorDownCommand());
+
+    // Right Bumper -> Elevator Up
+    m_driverController.rightBumper().whileTrue(m_elevatorSubSystem.elevatorUpCommand());
  
   }
-
-  
+     
 
   /**
    * Use this to pass the autonomous command to the main {@link Robot} class.

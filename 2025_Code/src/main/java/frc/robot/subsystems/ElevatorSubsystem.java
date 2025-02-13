@@ -151,6 +151,11 @@ public class ElevatorSubsystem extends SubsystemBase {
             wasResetByButton = false;
         }
         }
+
+        /** Set the elevator motor power in teh range of [-1,1] */
+        public void setElevatorPower(double power) {
+            l_elevatorMotor.set(power);
+        }
      
         /**
          * Command to set the subsystem setpoint. This will set the arm and elevator to their predefined
@@ -184,7 +189,22 @@ public class ElevatorSubsystem extends SubsystemBase {
             });
         }
     
-        
+        /**
+         * Command to run the elevator motor up.  When the comman is interrupted, the motor will stop.
+         */
+        public Command elevatorUpCommand(){
+            return this.startEnd(
+                () -> this.setElevatorPower(ElevatorSetpoints.kUp), () -> this.setElevatorPower(0.0));
+        }
+
+        /**
+         * Command to run the elevator motor up.  When the comman is interrupted, the motor will stop.
+         */
+        public Command elevatorDownCommand(){
+            return this.startEnd(
+                () -> this.setElevatorPower(ElevatorSetpoints.kDown), () -> this.setElevatorPower(0.0));
+        }
+
         /**
          * Command to run the intake motor. When the command is interrupted, e.g. the button is released,
          * the motor will stop.
@@ -212,8 +232,9 @@ public class ElevatorSubsystem extends SubsystemBase {
         // Display subsystem values
         //SmartDashboard.putNumber("Coral/Arm/Target Position", armCurrentTarget);
        // SmartDashboard.putNumber("Coral/Arm/Actual Position", armEncoder.getPosition());
-        SmartDashboard.putNumber("Coral/Elevator/Target Position", elevatorCurrentTarget);
-        SmartDashboard.putNumber("Coral/Elevator/Actual Position", elevatorEncoder.getPosition());
+        SmartDashboard.putNumber("Elevator/Target Position", elevatorCurrentTarget);
+        SmartDashboard.putNumber("Elevator/Actual Position", elevatorEncoder.getPosition());
+        SmartDashboard.putNumber("Actual Velocity", elevatorEncoder.getVelocity());
         //SmartDashboard.putNumber("Coral/Intake/Applied Output", intakeMotor.getAppliedOutput());
     
         /*// Update mechanism2d

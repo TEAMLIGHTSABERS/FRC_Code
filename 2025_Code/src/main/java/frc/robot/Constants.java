@@ -22,15 +22,17 @@ public final class Constants {
   
   //Constants for the Elevator Subsystem
   public static final class ElevatorSubsystemConstants {
-    public static final int kElevatorLeadCanId = 2; //need to change
-    public static final int kElevatorFollowCanId = 3; //need to change
+    public static final int kElevatorLeadCanId = 3;
+    public static final int kElevatorFollowCanId = 4;
 
-    public static final class ElevatorSetpoints {
-      public static final int kFeederStation = 0;
+    public static final class ElevatorSetpoints { //need to adjust these for actual positions
+      public static final int kFeederStation = 50;
       public static final int kLevel1 = 0;
-      public static final int kLevel2 = 0;
-      public static final int kLevel3 = 100;
-      public static final int kLevel4 = 150;
+      public static final int kLevel2 = 25;
+      public static final int kLevel3 = 75;
+      public static final int kLevel4 = 100;
+      public static final double kUp = 0.5;
+      public static final double kDown = -0.25;
     }
   }
   
