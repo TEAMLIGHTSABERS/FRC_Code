@@ -1,9 +1,6 @@
 package frc.robot.subsystems;
 
 import com.revrobotics.RelativeEncoder;
-import com.revrobotics.sim.SparkFlexSim;
-import com.revrobotics.sim.SparkLimitSwitchSim;
-import com.revrobotics.sim.SparkMaxSim;
 import com.revrobotics.spark.SparkBase.ControlType;
 import com.revrobotics.spark.SparkBase.PersistMode;
 import com.revrobotics.spark.SparkBase.ResetMode;
@@ -14,21 +11,14 @@ import com.revrobotics.spark.SparkMax;
 import edu.wpi.first.math.system.plant.DCMotor;
 import edu.wpi.first.math.util.Units;
 import edu.wpi.first.wpilibj.RobotController;
-import edu.wpi.first.wpilibj.simulation.ElevatorSim;
-import edu.wpi.first.wpilibj.simulation.SingleJointedArmSim;
-import edu.wpi.first.wpilibj.smartdashboard.Mechanism2d;
-import edu.wpi.first.wpilibj.smartdashboard.MechanismLigament2d;
-import edu.wpi.first.wpilibj.smartdashboard.MechanismRoot2d;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Configs;
 import frc.robot.Constants.ElevatorSubsystemConstants;
 import frc.robot.Constants.ElevatorSubsystemConstants.ElevatorSetpoints;
-import frc.robot.Constants.SimulationRobotConstants;
-
-
-
+import frc.robot.Constants.ElevatorSubsystemConstants.IntakeSetpoints;
+import frc.robot.Constants.ElevatorSubsystemConstants.WristSetpoints;
 
 public class ElevatorSubsystem extends SubsystemBase {
     /** Subsystem-wide setpoints */
@@ -37,9 +27,11 @@ public class ElevatorSubsystem extends SubsystemBase {
         kLevel1,
         kLevel2,
         kLevel3,
-        kLevel4;
+        kLevel4,
+        kDriverInput;
     }
 
+    /*Elevator Motor Initialization - Lead motor and follower */
     private SparkMax l_elevatorMotor =
         new SparkMax(ElevatorSubsystemConstants.kElevatorLeadCanId, MotorType.kBrushless);
 
@@ -51,10 +43,23 @@ public class ElevatorSubsystem extends SubsystemBase {
     private SparkMax f_elevatorMotor =
         new SparkMax(ElevatorSubsystemConstants.kElevatorFollowCanId, MotorType.kBrushless);
 
+    /*Wrist Motor Initialization*/
+    private SparkMax wristMotor =
+        new SparkMax(ElevatorSubsystemConstants.kWristMotorCanId, MotorType.kBrushless);
+
+    private SparkClosedLoopController wristClosedLoopController =
+        wristMotor.getClosedLoopController();
+
+    private RelativeEncoder wristEncoder = wristMotor.getEncoder();
+
+    /*Intake Motor Initialization */
+    
+
     // Member variables for subsystem state management
     private boolean wasResetByButton = false;
     private boolean wasResetByLimit = false;
     private double elevatorCurrentTarget = ElevatorSetpoints.kFeederStation;
+    private double wristCurrentTarget = WristSetpoints.kFeederStation;
 
     /*// Simulation setup and variables
     private DCMotor elevatorMotorModel = DCMotor.getNeoVortex(1);
@@ -103,19 +108,14 @@ public class ElevatorSubsystem extends SubsystemBase {
             Configs.ElevatorSubsystem.f_elevatorConfig,
             ResetMode.kResetSafeParameters,
             PersistMode.kPersistParameters);
-    
-        /*// Display mechanism2d
-        SmartDashboard.putData("Elevator Subsystem", m_mech2d);*/
-    
+       
         // Zero elevator encoders on initialization
         elevatorEncoder.setPosition(0);
-    
-        /*// Initialize simulation values
-        elevatorMotorSim = new SparkFlexSim(elevatorMotor, elevatorMotorModel);
-        elevatorLimitSwitchSim = new SparkLimitSwitchSim(elevatorMotor, false);
-        armMotorSim = new SparkMaxSim(armMotor, armMotorModel);*/
-        }
-    
+
+        SmartDashboard.setDefaultNumber("Driver Input Position", 0);
+        
+    }
+
         /**
          * Drive the arm and elevator motors to their respective setpoints. This will use MAXMotion
          * position control which will allow for a smooth acceleration and deceleration to the mechanisms'
@@ -151,12 +151,7 @@ public class ElevatorSubsystem extends SubsystemBase {
             wasResetByButton = false;
         }
         }
-
-        /** Set the elevator motor power in the range of [-1,1] */
-        public void setElevatorPower(double power) {
-            l_elevatorMotor.set(power);
-        }
-     
+    
         /**
          * Command to set the subsystem setpoint. This will set the arm and elevator to their predefined
          * positions for the given setpoint.
@@ -185,26 +180,14 @@ public class ElevatorSubsystem extends SubsystemBase {
                     //armCurrentTarget = ArmSetpoints.kLevel4;
                     elevatorCurrentTarget = ElevatorSetpoints.kLevel4;
                     break;
+                case kDriverInput:
+                    elevatorCurrentTarget = ElevatorSetpoints.kDriverInput;
+                    break;
                 }
             });
-        }
-    
-        /**
-         * Command to run the elevator motor up.  When the comman is interrupted, the motor will stop.
-         */
-        public Command elevatorUpCommand(){
-            return this.startEnd(
-                () -> this.setElevatorPower(ElevatorSetpoints.kUp), () -> this.setElevatorPower(0.0));
-        }
 
-        /**
-         * Command to run the elevator motor up.  When the comman is interrupted, the motor will stop.
-         */
-        public Command elevatorDownCommand(){
-            return this.startEnd(
-                () -> this.setElevatorPower(ElevatorSetpoints.kDown), () -> this.setElevatorPower(0.0));
         }
-
+     
         /**
          * Command to run the intake motor. When the command is interrupted, e.g. the button is released,
          * the motor will stop.
@@ -222,6 +205,7 @@ public class ElevatorSubsystem extends SubsystemBase {
         return this.startEnd(
             () -> this.setIntakePower(IntakeSetpoints.kReverse), () -> this.setIntakePower(0.0));
         }*/
+        
     
         @Override
         public void periodic() {
@@ -232,6 +216,7 @@ public class ElevatorSubsystem extends SubsystemBase {
         // Display subsystem values
         //SmartDashboard.putNumber("Coral/Arm/Target Position", armCurrentTarget);
        // SmartDashboard.putNumber("Coral/Arm/Actual Position", armEncoder.getPosition());
+        //SmartDashboard.putNumber("Driver Input Position", kDriverInput);
         SmartDashboard.putNumber("Elevator/Target Position", elevatorCurrentTarget);
         SmartDashboard.putNumber("Elevator/Actual Position", elevatorEncoder.getPosition());
         SmartDashboard.putNumber("Actual Velocity", elevatorEncoder.getVelocity());

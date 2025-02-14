@@ -12,6 +12,7 @@ import edu.wpi.first.wpilibj2.command.RunCommand;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import frc.robot.Constants.OIConstants;
+import frc.robot.Constants.ElevatorSubsystemConstants.ElevatorSetpoints;
 import frc.robot.subsystems.DriveSubsystem;
 import frc.robot.subsystems.ElevatorSubsystem;
 import frc.robot.subsystems.ElevatorSubsystem.Setpoint;
@@ -51,6 +52,8 @@ public class RobotContainer {
     //SmartDashboard.putData("Auto Chooser", autoChooser);
 
     //SmartDashboard.putData("New Auto", new PathPlannerAuto("New Auto"));
+
+    ElevatorSetpoints.kDriverInput = SmartDashboard.getNumber("Target Position", 0);
 
     // Configure the button bindings
     configureButtonBindings();
@@ -96,11 +99,8 @@ public class RobotContainer {
     // Y Button -> Elevator/Arm to level 4 position
     m_driverController.y().onTrue(m_elevatorSubSystem.setSetpointCommand(Setpoint.kLevel4));
 
-    // Right Trigger -> Elevator Down
-    m_driverController.rightTrigger(OIConstants.kTriggerButtonThreshold).whileTrue(m_elevatorSubSystem.elevatorDownCommand());
-
     // Right Bumper -> Elevator Up
-    m_driverController.rightBumper().whileTrue(m_elevatorSubSystem.elevatorUpCommand());
+    m_driverController.rightBumper().onTrue(m_elevatorSubSystem.setSetpointCommand(Setpoint.kDriverInput));
  
   }
      

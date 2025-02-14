@@ -12,12 +12,32 @@ public final class Configs {
     public static final class ElevatorSubsystem {
         public static final SparkMaxConfig l_elevatorConfig = new SparkMaxConfig();
         public static final SparkMaxConfig f_elevatorConfig = new SparkMaxConfig();
+        public static final SparkMaxConfig wristConfig = new SparkMaxConfig();
 
         static {
+         // Configure basic settings of the arm motor
+        wristConfig.idleMode(IdleMode.kBrake).smartCurrentLimit(40).voltageCompensation(12);
+
+      /*
+       * Configure the closed loop controller. We want to make sure we set the
+       * feedback sensor as the primary encoder.
+       */
+        wristConfig
+          .closedLoop
+          .feedbackSensor(FeedbackSensor.kPrimaryEncoder)
+          // Set PID values for position control
+          .p(0.1)
+          .outputRange(-1, 1)
+          .maxMotion
+          // Set MAXMotion parameters for position control
+          .maxVelocity(2000)
+          .maxAcceleration(10000)
+          .allowedClosedLoopError(0.25);
+         
          // Configure basic settings of the elevator motors
          l_elevatorConfig.idleMode(IdleMode.kBrake).smartCurrentLimit(50).voltageCompensation(12);
          f_elevatorConfig.idleMode(IdleMode.kBrake).follow(ElevatorSubsystemConstants.kElevatorLeadCanId, true).inverted(true).smartCurrentLimit(50).voltageCompensation(12);
-
+         
          /*
          * Configure the reverse limit switch for the elevator. By enabling the limit switch, this
          * will prevent any actuation of the elevator in the reverse direction if the limit switch is
