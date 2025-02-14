@@ -37,8 +37,8 @@ public final class Configs {
                 .closedLoop
                 .feedbackSensor(FeedbackSensor.kPrimaryEncoder)
                 // Set PID values for position control
-                .p(0.027)
-                .velocityFF(0.0085)
+                .p(0.01)
+                //velocityFF(0.0085)
                 .outputRange(-1, 1)
                 .maxMotion
                 // Set MAXMotion parameters for position control

@@ -26,13 +26,13 @@ public final class Constants {
     public static final int kElevatorFollowCanId = 4;
 
     public static final class ElevatorSetpoints { //need to adjust these for actual positions
-      public static final int kFeederStation = 50;
+      public static final int kFeederStation = 0;
       public static final int kLevel1 = 0;
-      public static final int kLevel2 = 25;
-      public static final int kLevel3 = 75;
-      public static final int kLevel4 = 100;
-      public static final double kUp = 0.5;
-      public static final double kDown = -0.25;
+      public static final int kLevel2 = 5;
+      public static final int kLevel3 = 10;
+      public static final int kLevel4 = 25;
+      public static final double kUp = 1.0;
+      public static final double kDown = -1;
     }
   }
   
