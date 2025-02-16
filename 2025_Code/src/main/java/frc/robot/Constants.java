@@ -8,7 +8,6 @@ import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
 import edu.wpi.first.math.trajectory.TrapezoidProfile;
 import edu.wpi.first.math.util.Units;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 /**
  * The Constants class provides a convenient place for teams to hold robot-wide numerical or boolean
@@ -20,7 +19,6 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
  */
 public final class Constants {
 
-  
   //Constants for the Elevator Subsystem
     public static final class ElevatorSubsystemConstants {
       public static final int kElevatorLeadCanId = 3;
@@ -34,16 +32,16 @@ public final class Constants {
         public static final int kLevel2 = 5;
         public static final int kLevel3 = 10;
         public static final int kLevel4 = 25;
-        public static double kDriverInput = 0.0;
+        public static double kDriverInput = 0;
       }
 
       public static final class WristSetpoints{
-        public static final double kFeederStation = 0;
-        public static final double kLevel1 = 0;
-        public static final double kLevel2 = 0;
-        public static final double kLevel3 = 0;
-        public static final double kLevel4 = 0;
-        public static double kDriverInput = 0;
+        public static final double kWFeederStation = 0;
+        public static final double kWLevel1 = 0;
+        public static final double kWLevel2 = 0;
+        public static final double kWLevel3 = 0;
+        public static final double kWLevel4 = 0;
+        public static double kWDriverInput = 0;
       }
 
       public static final class IntakeSetpoints{

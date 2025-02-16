@@ -5,11 +5,8 @@ import com.revrobotics.spark.SparkBase.ControlType;
 import com.revrobotics.spark.SparkBase.PersistMode;
 import com.revrobotics.spark.SparkBase.ResetMode;
 import com.revrobotics.spark.SparkClosedLoopController;
-import com.revrobotics.spark.SparkFlex;
 import com.revrobotics.spark.SparkLowLevel.MotorType;
 import com.revrobotics.spark.SparkMax;
-import edu.wpi.first.math.system.plant.DCMotor;
-import edu.wpi.first.math.util.Units;
 import edu.wpi.first.wpilibj.RobotController;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
@@ -28,7 +25,8 @@ public class ElevatorSubsystem extends SubsystemBase {
         kLevel2,
         kLevel3,
         kLevel4,
-        kDriverInput;
+        kDriverInput,
+        kWDriverInput;
     }
 
     /*Elevator Motor Initialization - Lead motor and follower */
@@ -53,13 +51,14 @@ public class ElevatorSubsystem extends SubsystemBase {
     private RelativeEncoder wristEncoder = wristMotor.getEncoder();
 
     /*Intake Motor Initialization */
-    
+    private SparkMax intakeMotor =
+        new SparkMax(ElevatorSubsystemConstants.kIntakeMotorCanId, MotorType.kBrushless);
 
     // Member variables for subsystem state management
     private boolean wasResetByButton = false;
     private boolean wasResetByLimit = false;
     private double elevatorCurrentTarget = ElevatorSetpoints.kFeederStation;
-    private double wristCurrentTarget = WristSetpoints.kFeederStation;
+    private double wristCurrentTarget = WristSetpoints.kWFeederStation;
 
     /*// Simulation setup and variables
     private DCMotor elevatorMotorModel = DCMotor.getNeoVortex(1);
@@ -108,11 +107,21 @@ public class ElevatorSubsystem extends SubsystemBase {
             Configs.ElevatorSubsystem.f_elevatorConfig,
             ResetMode.kResetSafeParameters,
             PersistMode.kPersistParameters);
+        wristMotor.configure(
+            Configs.ElevatorSubsystem.wristConfig,
+            ResetMode.kNoResetSafeParameters,
+            PersistMode.kPersistParameters);
+        intakeMotor.configure(
+            Configs.ElevatorSubsystem.wristConfig,
+            ResetMode.kNoResetSafeParameters,
+            PersistMode.kPersistParameters);
        
         // Zero elevator encoders on initialization
         elevatorEncoder.setPosition(0);
+        //wristEncoder.setPosition(0);
 
-        SmartDashboard.setDefaultNumber("Driver Input Position", 0);
+        SmartDashboard.setDefaultNumber("Elevator Driver Input", 0);
+        SmartDashboard.setDefaultNumber("Wrist Driver Input", 0);
         
     }
 
@@ -122,9 +131,8 @@ public class ElevatorSubsystem extends SubsystemBase {
          * setpoints.
          */
         private void moveToSetpoint() {
-        //armController.setReference(armCurrentTarget, ControlType.kMAXMotionPositionControl);
-        elevatorClosedLoopController.setReference(
-            elevatorCurrentTarget, ControlType.kMAXMotionPositionControl);
+        wristClosedLoopController.setReference(wristCurrentTarget, ControlType.kMAXMotionPositionControl);
+        elevatorClosedLoopController.setReference(elevatorCurrentTarget, ControlType.kMAXMotionPositionControl);
         }
     
         /** Zero the elevator encoder when the limit switch is pressed. */
@@ -151,6 +159,11 @@ public class ElevatorSubsystem extends SubsystemBase {
             wasResetByButton = false;
         }
         }
+
+        /* Set the intake power in the range of [-1,1]. */
+        private void setIntakePower(double power){
+            intakeMotor.set(power);
+        }
     
         /**
          * Command to set the subsystem setpoint. This will set the arm and elevator to their predefined
@@ -161,27 +174,30 @@ public class ElevatorSubsystem extends SubsystemBase {
             () -> {
                 switch (setpoint) {
                 case kFeederStation:
-                    //armCurrentTarget = ArmSetpoints.kFeederStation;
+                    wristCurrentTarget = WristSetpoints.kWFeederStation;
                     elevatorCurrentTarget = ElevatorSetpoints.kFeederStation;
                     break;
                 case kLevel1:
-                    //armCurrentTarget = ArmSetpoints.kLevel1;
+                    wristCurrentTarget = WristSetpoints.kWLevel1;
                     elevatorCurrentTarget = ElevatorSetpoints.kLevel1;
                     break;
                 case kLevel2:
-                    //armCurrentTarget = ArmSetpoints.kLevel2;
+                    wristCurrentTarget = WristSetpoints.kWLevel2;
                     elevatorCurrentTarget = ElevatorSetpoints.kLevel2;
                     break;
                 case kLevel3:
-                    //armCurrentTarget = ArmSetpoints.kLevel3;
+                    wristCurrentTarget = WristSetpoints.kWLevel3;
                     elevatorCurrentTarget = ElevatorSetpoints.kLevel3;
                     break;
                 case kLevel4:
-                    //armCurrentTarget = ArmSetpoints.kLevel4;
+                    wristCurrentTarget = WristSetpoints.kWLevel4;
                     elevatorCurrentTarget = ElevatorSetpoints.kLevel4;
                     break;
-                case kDriverInput:
+                case kDriverInput:            
                     elevatorCurrentTarget = ElevatorSetpoints.kDriverInput;
+                    break;
+                case kWDriverInput:
+                    wristCurrentTarget = WristSetpoints.kWDriverInput;
                     break;
                 }
             });
@@ -192,19 +208,19 @@ public class ElevatorSubsystem extends SubsystemBase {
          * Command to run the intake motor. When the command is interrupted, e.g. the button is released,
          * the motor will stop.
          */
-        /*public Command runIntakeCommand() {
+        public Command runIntakeCommand() {
         return this.startEnd(
             () -> this.setIntakePower(IntakeSetpoints.kForward), () -> this.setIntakePower(0.0));
-        }*/
+        }
     
         /**
          * Command to reverses the intake motor. When the command is interrupted, e.g. the button is
          * released, the motor will stop.
          */
-        /*public Command reverseIntakeCommand() {
+        public Command reverseIntakeCommand() {
         return this.startEnd(
             () -> this.setIntakePower(IntakeSetpoints.kReverse), () -> this.setIntakePower(0.0));
-        }*/
+        }
         
     
         @Override
@@ -212,15 +228,17 @@ public class ElevatorSubsystem extends SubsystemBase {
         moveToSetpoint();
         zeroElevatorOnLimitSwitch();
         zeroOnUserButton();
+
+        ElevatorSetpoints.kDriverInput = SmartDashboard.getNumber("Elevator Driver Input", 0);
+        WristSetpoints.kWDriverInput = SmartDashboard.getNumber("Wrist Driver Input", 0);
     
         // Display subsystem values
-        //SmartDashboard.putNumber("Coral/Arm/Target Position", armCurrentTarget);
-       // SmartDashboard.putNumber("Coral/Arm/Actual Position", armEncoder.getPosition());
-        //SmartDashboard.putNumber("Driver Input Position", kDriverInput);
+        SmartDashboard.putNumber("Wrist/Target Position", wristCurrentTarget);
+        SmartDashboard.putNumber("Wrist/Actual Position", wristEncoder.getPosition());
         SmartDashboard.putNumber("Elevator/Target Position", elevatorCurrentTarget);
         SmartDashboard.putNumber("Elevator/Actual Position", elevatorEncoder.getPosition());
-        SmartDashboard.putNumber("Actual Velocity", elevatorEncoder.getVelocity());
-        //SmartDashboard.putNumber("Coral/Intake/Applied Output", intakeMotor.getAppliedOutput());
+        SmartDashboard.putNumber("Elevator/Actual Velocity", elevatorEncoder.getVelocity());
+        SmartDashboard.putNumber("Intake/Applied Output", intakeMotor.getAppliedOutput());
     
         /*// Update mechanism2d
         m_elevatorMech2d.setLength(

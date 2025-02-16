@@ -13,60 +13,62 @@ public final class Configs {
         public static final SparkMaxConfig l_elevatorConfig = new SparkMaxConfig();
         public static final SparkMaxConfig f_elevatorConfig = new SparkMaxConfig();
         public static final SparkMaxConfig wristConfig = new SparkMaxConfig();
-
+        public static final SparkMaxConfig intakeConfig = new SparkMaxConfig();
+        
         static {
-         // Configure basic settings of the arm motor
-        wristConfig.idleMode(IdleMode.kBrake).smartCurrentLimit(40).voltageCompensation(12);
+                // Configure basic settings of the wrist motor
+                wristConfig.idleMode(IdleMode.kBrake).smartCurrentLimit(40).voltageCompensation(12);
 
-      /*
-       * Configure the closed loop controller. We want to make sure we set the
-       * feedback sensor as the primary encoder.
-       */
-        wristConfig
-          .closedLoop
-          .feedbackSensor(FeedbackSensor.kPrimaryEncoder)
-          // Set PID values for position control
-          .p(0.1)
-          .outputRange(-1, 1)
-          .maxMotion
-          // Set MAXMotion parameters for position control
-          .maxVelocity(2000)
-          .maxAcceleration(10000)
-          .allowedClosedLoopError(0.25);
+                /*
+                 * Configure the closed loop controller. We want to make sure we set the
+                 * feedback sensor as the primary encoder.
+                 */
+                wristConfig
+                        .closedLoop
+                        .feedbackSensor(FeedbackSensor.kPrimaryEncoder)
+                        // Set PID values for position control
+                        .p(0.1)
+                        .outputRange(-1, 1)
+                        .maxMotion
+                        // Set MAXMotion parameters for position control
+                        .maxVelocity(2000)
+                        .maxAcceleration(10000)
+                        .allowedClosedLoopError(0.25);
+                        
+                // Configure basic settings of the elevator motors
+                l_elevatorConfig.idleMode(IdleMode.kBrake).smartCurrentLimit(50).voltageCompensation(12);
+                f_elevatorConfig.idleMode(IdleMode.kBrake).follow(ElevatorSubsystemConstants.kElevatorLeadCanId, true).inverted(true).smartCurrentLimit(50).voltageCompensation(12);
          
-         // Configure basic settings of the elevator motors
-         l_elevatorConfig.idleMode(IdleMode.kBrake).smartCurrentLimit(50).voltageCompensation(12);
-         f_elevatorConfig.idleMode(IdleMode.kBrake).follow(ElevatorSubsystemConstants.kElevatorLeadCanId, true).inverted(true).smartCurrentLimit(50).voltageCompensation(12);
-         
-         /*
-         * Configure the reverse limit switch for the elevator. By enabling the limit switch, this
-         * will prevent any actuation of the elevator in the reverse direction if the limit switch is
-         * pressed.
-         */
-         l_elevatorConfig
-                .limitSwitch
-                .reverseLimitSwitchEnabled(true)
-                .reverseLimitSwitchType(Type.kNormallyOpen);
+                /*
+                * Configure the reverse limit switch for the elevator. By enabling the limit switch, this
+                * will prevent any actuation of the elevator in the reverse direction if the limit switch is
+                * pressed.
+                */
+                l_elevatorConfig
+                        .limitSwitch
+                        .reverseLimitSwitchEnabled(true)
+                        .reverseLimitSwitchType(Type.kNormallyOpen);
 
-         
-         /*
-         * Configure the closed loop controller. We want to make sure we set the
-         * feedback sensor as the primary encoder.
-         */
-         l_elevatorConfig 
-                .closedLoop
-                .feedbackSensor(FeedbackSensor.kPrimaryEncoder)
-                // Set PID values for position control
-                .p(0.01)
-                //velocityFF(0.0085)
-                .outputRange(-1, 1)
-                .maxMotion
-                // Set MAXMotion parameters for position control
-                .maxVelocity(4200)
-                .maxAcceleration(6000)
-                .allowedClosedLoopError(0.5);
-        }
+                
+                /*
+                * Configure the closed loop controller. We want to make sure we set the
+                * feedback sensor as the primary encoder.
+                */
+                l_elevatorConfig 
+                        .closedLoop
+                        .feedbackSensor(FeedbackSensor.kPrimaryEncoder)
+                        // Set PID values for position control
+                        .p(0.01)
+                        //velocityFF(0.0085)
+                        .outputRange(-1, 1)
+                        .maxMotion
+                        // Set MAXMotion parameters for position control
+                        .maxVelocity(4200)
+                        .maxAcceleration(6000)
+                        .allowedClosedLoopError(0.5);
 
+                intakeConfig.inverted(true).idleMode(IdleMode.kBrake).smartCurrentLimit(40);
+                }
         }
 
     public static final class MAXSwerveModule {
