@@ -152,7 +152,7 @@ public class ElevatorSubsystem extends SubsystemBase {
         }
         }
 
-        /** Set the elevator motor power in teh range of [-1,1] */
+        /** Set the elevator motor power in the range of [-1,1] */
         public void setElevatorPower(double power) {
             l_elevatorMotor.set(power);
         }

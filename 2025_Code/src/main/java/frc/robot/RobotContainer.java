@@ -19,9 +19,9 @@ import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 import com.pathplanner.lib.auto.AutoBuilder;
-import com.pathplanner.lib.auto.NamedCommands;
+//import com.pathplanner.lib.auto.NamedCommands;
 import com.pathplanner.lib.commands.PathPlannerAuto;
-import com.pathplanner.lib.path.PathPlannerPath; //Only needed for on-the-fly pathplanning
+//import com.pathplanner.lib.path.PathPlannerPath; //Only needed for on-the-fly pathplanning
 
 import java.util.List;
 
@@ -38,7 +38,7 @@ public class RobotContainer {
   
   // A chooser for autonomous commands
   //SendableChooser<Command> m_chooser = new SendableChooser<>();
-  private final SendableChooser<Command> autoChooser;
+  //private final SendableChooser<Command> autoChooser;
   
   // The driver's controller
   CommandXboxController m_driverController =
@@ -47,10 +47,10 @@ public class RobotContainer {
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
   public RobotContainer() {
     
-    autoChooser = AutoBuilder.buildAutoChooser();
-    SmartDashboard.putData("Auto Chooser", autoChooser);
+    //autoChooser = AutoBuilder.buildAutoChooser();
+    //SmartDashboard.putData("Auto Chooser", autoChooser);
 
-    SmartDashboard.putData("New Auto", new PathPlannerAuto("New Auto"));
+    //SmartDashboard.putData("New Auto", new PathPlannerAuto("New Auto"));
 
     // Configure the button bindings
     configureButtonBindings();
@@ -110,7 +110,7 @@ public class RobotContainer {
    *
    * @return the command to run in autonomous
    */
-  public Command getAutonomousCommand() {
+  /*public Command getAutonomousCommand() {
     
     /*    try{
         // Load the path you want to follow using its name in the GUI
@@ -125,6 +125,6 @@ public class RobotContainer {
     Commented out because it is part of 2025 year update. (Updated library not released at time of editing)
 */
     
-    return autoChooser.getSelected();
-  }
+    //return autoChooser.getSelected();
+  //}
 }
