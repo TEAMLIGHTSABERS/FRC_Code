@@ -7,6 +7,8 @@ package frc.robot;
 import edu.wpi.first.math.MathUtil;
 
 import edu.wpi.first.wpilibj.XboxController;
+import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
+import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.RunCommand;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
@@ -16,14 +18,11 @@ import frc.robot.subsystems.DriveSubsystem;
 import frc.robot.subsystems.ElevatorSubsystem;
 import frc.robot.subsystems.ElevatorSubsystem.Setpoint;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 import com.pathplanner.lib.auto.AutoBuilder;
 //import com.pathplanner.lib.auto.NamedCommands;
 import com.pathplanner.lib.commands.PathPlannerAuto;
 //import com.pathplanner.lib.path.PathPlannerPath; //Only needed for on-the-fly pathplanning
-
-import java.util.List;
 
 /*
  * This class is where the bulk of the robot should be declared.  Since Command-based is a
@@ -37,19 +36,21 @@ public class RobotContainer {
   private final ElevatorSubsystem m_elevatorSubSystem = new ElevatorSubsystem();
   
   // A chooser for autonomous commands
-  //SendableChooser<Command> m_chooser = new SendableChooser<>();
-  //private final SendableChooser<Command> autoChooser;
+  SendableChooser<Command> m_chooser = new SendableChooser<>();
+  private final SendableChooser<Command> autoChooser;
   
   // The driver's controller
   CommandXboxController m_driverController =
       new CommandXboxController(OIConstants.kDriverControllerPort);
-  
+
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
   public RobotContainer() {
     
-    //autoChooser = AutoBuilder.buildAutoChooser();
+    autoChooser = AutoBuilder.buildAutoChooser();
+    ShuffleboardTab autoTab = Shuffleboard.getTab("Auto");
+    autoTab.add(autoChooser);
+    
     //SmartDashboard.putData("Auto Chooser", autoChooser);
-
     //SmartDashboard.putData("New Auto", new PathPlannerAuto("New Auto"));
 
     // Configure the button bindings
@@ -76,31 +77,43 @@ public class RobotContainer {
    * {@link JoystickButton}.
    */
   private void configureButtonBindings() {
+
+    // Right Stick Button -> drive to April tag
+    /*if(m_driverController.rightStick()){
+
+    }*/
+    
     // Left Stick Button -> Set swerve to X
     m_driverController.leftStick().whileTrue(m_robotDrive.setXCommand());
 
     // Start Button -> Zero swerve heading
     m_driverController.start().onTrue(m_robotDrive.zeroHeadingCommand());
 
-    // B Button -> Elevator/Arm to human player position, set ball intake to stow
+    // B Button -> Elevator/Wrist to human player position, set ball intake to stow
     // when idle    
     m_driverController
         .b().onTrue(m_elevatorSubSystem.setSetpointCommand(Setpoint.kFeederStation));
 
-    // A Button -> Elevator/Arm to level 2 position
+    // A Button -> Elevator/Wrist to level 2 position
     m_driverController.a().onTrue(m_elevatorSubSystem.setSetpointCommand(Setpoint.kLevel2));
 
-    // X Button -> Elevator/Arm to level 3 position
+    // X Button -> Elevator/Wrist to level 3 position
     m_driverController.x().onTrue(m_elevatorSubSystem.setSetpointCommand(Setpoint.kLevel3));
 
-    // Y Button -> Elevator/Arm to level 4 position
+    // Y Button -> Elevator/Wrist to level 4 position
     m_driverController.y().onTrue(m_elevatorSubSystem.setSetpointCommand(Setpoint.kLevel4));
 
-    // Right Trigger -> Elevator Down
-    m_driverController.rightTrigger(OIConstants.kTriggerButtonThreshold).whileTrue(m_elevatorSubSystem.elevatorDownCommand());
+    // Right Bumper -> Elevator to Driver Input
+    m_driverController.rightBumper().onTrue(m_elevatorSubSystem.setSetpointCommand(Setpoint.kDriverInput));
 
-    // Right Bumper -> Elevator Up
-    m_driverController.rightBumper().whileTrue(m_elevatorSubSystem.elevatorUpCommand());
+    // Right Trigger  -> Wrist to Driver Input
+    m_driverController.rightTrigger(OIConstants.kTriggerButtonThreshold).whileTrue(m_elevatorSubSystem.setSetpointCommand((Setpoint.kDriverInput)));
+
+    // Left Bumper -> Run tube intake
+    m_driverController.leftBumper().whileTrue(m_elevatorSubSystem.runIntakeCommand());
+
+    // Left Trigger -> Run ball intake in reverse, set to stow when idle
+    m_driverController.leftTrigger(OIConstants.kTriggerButtonThreshold).whileTrue(m_elevatorSubSystem.reverseIntakeCommand());
  
   }
      
@@ -110,21 +123,7 @@ public class RobotContainer {
    *
    * @return the command to run in autonomous
    */
-  /*public Command getAutonomousCommand() {
-    
-    /*    try{
-        // Load the path you want to follow using its name in the GUI
-        PathPlannerPath path = PathPlannerPath.fromPathFile("New Path");
-
-        // Create a path following command using AutoBuilder. This will also trigger event markers.
-        return AutoBuilder.followPath(path);
-    } catch (Exception e) {
-        DriverStation.reportError("Big oops: " + e.getMessage(), e.getStackTrace());
-        return Commands.none();
-    }
-    Commented out because it is part of 2025 year update. (Updated library not released at time of editing)
-*/
-    
-    //return autoChooser.getSelected();
-  //}
+  public Command getAutonomousCommand() {  
+    return autoChooser.getSelected();
+  }
 }
