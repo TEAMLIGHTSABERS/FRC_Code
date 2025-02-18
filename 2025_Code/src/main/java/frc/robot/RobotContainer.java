@@ -36,13 +36,13 @@ public class RobotContainer {
   private final ElevatorSubsystem m_elevatorSubSystem = new ElevatorSubsystem();
   
   // A chooser for autonomous commands
-  //SendableChooser<Command> m_chooser = new SendableChooser<>();
+  SendableChooser<Command> m_chooser = new SendableChooser<>();
   private final SendableChooser<Command> autoChooser;
   
   // The driver's controller
   CommandXboxController m_driverController =
       new CommandXboxController(OIConstants.kDriverControllerPort);
-  
+
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
   public RobotContainer() {
     
@@ -77,6 +77,12 @@ public class RobotContainer {
    * {@link JoystickButton}.
    */
   private void configureButtonBindings() {
+
+    // Right Stick Button -> drive to April tag
+    /*if(m_driverController.rightStick()){
+
+    }*/
+    
     // Left Stick Button -> Set swerve to X
     m_driverController.leftStick().whileTrue(m_robotDrive.setXCommand());
 
@@ -118,6 +124,6 @@ public class RobotContainer {
    * @return the command to run in autonomous
    */
   public Command getAutonomousCommand() {  
-    return new PathPlannerAuto(autoChooser.getSelected());
+    return autoChooser.getSelected();
   }
 }

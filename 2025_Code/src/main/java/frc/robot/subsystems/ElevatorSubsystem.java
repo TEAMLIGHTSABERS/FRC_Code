@@ -49,7 +49,7 @@ public class ElevatorSubsystem extends SubsystemBase {
         wristMotor.getClosedLoopController();
 
     private RelativeEncoder wristEncoder = wristMotor.getEncoder();
-
+    
     /*Intake Motor Initialization */
     private SparkMax intakeMotor =
         new SparkMax(ElevatorSubsystemConstants.kIntakeMotorCanId, MotorType.kBrushless);
@@ -118,7 +118,7 @@ public class ElevatorSubsystem extends SubsystemBase {
        
         // Zero elevator encoders on initialization
         elevatorEncoder.setPosition(0);
-        //wristEncoder.setPosition(0);
+        wristEncoder.setPosition(0);
 
         SmartDashboard.setDefaultNumber("Elevator Driver Input", 0);
         SmartDashboard.setDefaultNumber("Wrist Driver Input", 0);
@@ -153,7 +153,7 @@ public class ElevatorSubsystem extends SubsystemBase {
             // Zero the encoders only when button switches from "unpressed" to "pressed" to prevent
             // constant zeroing while pressed
             wasResetByButton = true;
-            //armEncoder.setPosition(0);
+            wristEncoder.setPosition(0);
             elevatorEncoder.setPosition(0);
         } else if (!RobotController.getUserButton()) {
             wasResetByButton = false;

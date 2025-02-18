@@ -34,6 +34,8 @@ public final class Configs {
                         .maxVelocity(2000)
                         .maxAcceleration(10000)
                         .allowedClosedLoopError(0.25);
+                
+                wristConfig.encoder.positionConversionFactor(36);
                         
                 // Configure basic settings of the elevator motors
                 l_elevatorConfig.idleMode(IdleMode.kBrake).smartCurrentLimit(50).voltageCompensation(12);
