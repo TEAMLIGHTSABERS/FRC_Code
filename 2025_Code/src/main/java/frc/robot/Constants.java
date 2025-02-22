@@ -31,7 +31,7 @@ public final class Constants {
         public static final int kLevel1 = 0;
         public static final int kLevel2 = 5;
         public static final int kLevel3 = 10;
-        public static final int kLevel4 = 25;
+        public static final double kLevel4 = 52.5;
         public static double kDriverInput = 0;
       }
 
@@ -42,6 +42,7 @@ public final class Constants {
         public static final double kWLevel3 = 0;
         public static final double kWLevel4 = 0;
         public static double kWDriverInput = 0;
+        public static double wristConversionFactor = 1/36;
       }
 
       public static final class IntakeSetpoints{

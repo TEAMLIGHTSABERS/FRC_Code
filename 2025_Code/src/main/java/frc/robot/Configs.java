@@ -5,6 +5,7 @@ import com.revrobotics.spark.config.ClosedLoopConfig.FeedbackSensor;
 import com.revrobotics.spark.config.SparkBaseConfig.IdleMode;
 import com.revrobotics.spark.config.LimitSwitchConfig.Type;
 import frc.robot.Constants.ModuleConstants;
+import frc.robot.Constants.ElevatorSubsystemConstants.WristSetpoints;
 import frc.robot.Constants.ElevatorSubsystemConstants;
 
 public final class Configs {
@@ -35,7 +36,7 @@ public final class Configs {
                         .maxAcceleration(10000)
                         .allowedClosedLoopError(0.25);
                 
-                wristConfig.encoder.positionConversionFactor(36);
+                wristConfig.encoder.positionConversionFactor(WristSetpoints.wristConversionFactor);
                         
                 // Configure basic settings of the elevator motors
                 l_elevatorConfig.idleMode(IdleMode.kBrake).smartCurrentLimit(50).voltageCompensation(12);

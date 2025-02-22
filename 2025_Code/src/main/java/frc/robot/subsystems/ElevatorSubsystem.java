@@ -59,6 +59,7 @@ public class ElevatorSubsystem extends SubsystemBase {
     private boolean wasResetByLimit = false;
     private double elevatorCurrentTarget = ElevatorSetpoints.kFeederStation;
     private double wristCurrentTarget = WristSetpoints.kWFeederStation;
+    private double intakeDirection = IntakeSetpoints.kReverse;
 
     /*// Simulation setup and variables
     private DCMotor elevatorMotorModel = DCMotor.getNeoVortex(1);
@@ -112,7 +113,7 @@ public class ElevatorSubsystem extends SubsystemBase {
             ResetMode.kNoResetSafeParameters,
             PersistMode.kPersistParameters);
         intakeMotor.configure(
-            Configs.ElevatorSubsystem.wristConfig,
+            Configs.ElevatorSubsystem.intakeConfig,
             ResetMode.kNoResetSafeParameters,
             PersistMode.kPersistParameters);
        
@@ -176,22 +177,27 @@ public class ElevatorSubsystem extends SubsystemBase {
                 case kFeederStation:
                     wristCurrentTarget = WristSetpoints.kWFeederStation;
                     elevatorCurrentTarget = ElevatorSetpoints.kFeederStation;
+                    intakeDirection = IntakeSetpoints.kReverse;
                     break;
                 case kLevel1:
                     wristCurrentTarget = WristSetpoints.kWLevel1;
                     elevatorCurrentTarget = ElevatorSetpoints.kLevel1;
+                    intakeDirection = IntakeSetpoints.kForward;
                     break;
                 case kLevel2:
                     wristCurrentTarget = WristSetpoints.kWLevel2;
                     elevatorCurrentTarget = ElevatorSetpoints.kLevel2;
+                    intakeDirection = IntakeSetpoints.kForward;
                     break;
                 case kLevel3:
                     wristCurrentTarget = WristSetpoints.kWLevel3;
                     elevatorCurrentTarget = ElevatorSetpoints.kLevel3;
+                    intakeDirection = IntakeSetpoints.kForward;
                     break;
                 case kLevel4:
                     wristCurrentTarget = WristSetpoints.kWLevel4;
                     elevatorCurrentTarget = ElevatorSetpoints.kLevel4;
+                    intakeDirection = IntakeSetpoints.kForward;
                     break;
                 case kDriverInput:            
                     elevatorCurrentTarget = ElevatorSetpoints.kDriverInput;
@@ -208,7 +214,7 @@ public class ElevatorSubsystem extends SubsystemBase {
          * Command to run the intake motor. When the command is interrupted, e.g. the button is released,
          * the motor will stop.
          */
-        public Command runIntakeCommand() {
+        public Command forwardIntakeCommand() {
         return this.startEnd(
             () -> this.setIntakePower(IntakeSetpoints.kForward), () -> this.setIntakePower(0.0));
         }
@@ -220,6 +226,11 @@ public class ElevatorSubsystem extends SubsystemBase {
         public Command reverseIntakeCommand() {
         return this.startEnd(
             () -> this.setIntakePower(IntakeSetpoints.kReverse), () -> this.setIntakePower(0.0));
+        }
+
+        public Command runIntakeCommand(){
+            return this.startEnd(
+            () -> this.setIntakePower(intakeDirection), () -> this.setIntakePower(0.0));
         }
         
     
