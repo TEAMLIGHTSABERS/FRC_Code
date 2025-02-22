@@ -166,6 +166,21 @@ public class ElevatorSubsystem extends SubsystemBase {
             intakeMotor.set(power);
         }
     
+        /* Prep for dropping off at level 2 of the reef */
+        public void setSetpointReef2(){
+            setSetpointCommand(Setpoint.kLevel2);
+        }
+    
+        /* Prep for dropping off at level 4 of the reef */
+        public void setSetpointReef4(){
+            setSetpointCommand(Setpoint.kLevel4);
+        }
+    
+        /* Prep for picking up at the coral feeder station */
+        public void setSetpointCoralStation(){
+            setSetpointCommand(Setpoint.kFeederStation);
+        }
+    
         /**
          * Command to set the subsystem setpoint. This will set the arm and elevator to their predefined
          * positions for the given setpoint.
