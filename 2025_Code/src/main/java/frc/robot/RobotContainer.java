@@ -20,6 +20,7 @@ import frc.robot.subsystems.ElevatorSubsystem.Setpoint;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 
 import com.pathplanner.lib.auto.AutoBuilder;
+import com.pathplanner.lib.auto.NamedCommands;
 //import com.pathplanner.lib.auto.NamedCommands;
 import com.pathplanner.lib.commands.PathPlannerAuto;
 //import com.pathplanner.lib.path.PathPlannerPath; //Only needed for on-the-fly pathplanning
@@ -45,6 +46,11 @@ public class RobotContainer {
 
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
   public RobotContainer() {
+
+    NamedCommands.registerCommand("Coral Station", m_elevatorSubSystem.setSetpointCommand(Setpoint.kFeederStation));
+    NamedCommands.registerCommand("Level 2", m_elevatorSubSystem.setSetpointCommand(Setpoint.kLevel2));
+    NamedCommands.registerCommand("Level 3", m_elevatorSubSystem.setSetpointCommand(Setpoint.kLevel3));
+    NamedCommands.registerCommand("Level 4", m_elevatorSubSystem.setSetpointCommand(Setpoint.kLevel4));
     
     autoChooser = AutoBuilder.buildAutoChooser();
     ShuffleboardTab autoTab = Shuffleboard.getTab("Auto");

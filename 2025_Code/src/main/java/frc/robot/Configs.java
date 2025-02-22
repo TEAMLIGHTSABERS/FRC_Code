@@ -28,15 +28,17 @@ public final class Configs {
                         .closedLoop
                         .feedbackSensor(FeedbackSensor.kPrimaryEncoder)
                         // Set PID values for position control
-                        .p(0.1)
+                        .p(0.55)
                         .outputRange(-1, 1)
                         .maxMotion
                         // Set MAXMotion parameters for position control
-                        .maxVelocity(2000)
-                        .maxAcceleration(10000)
-                        .allowedClosedLoopError(0.25);
+                        .maxVelocity(500)
+                        .maxAcceleration(750)
+                        .allowedClosedLoopError(0.1);
                 
-               //wristConfig.encoder.positionConversionFactor(WristSetpoints.wristConversionFactor);
+                wristConfig
+                        .encoder
+                        .positionConversionFactor(WristSetpoints.wristConversionFactor);
                         
                 // Configure basic settings of the elevator motors
                 l_elevatorConfig.idleMode(IdleMode.kBrake).smartCurrentLimit(50).voltageCompensation(12);
@@ -68,7 +70,7 @@ public final class Configs {
                         // Set MAXMotion parameters for position control
                         .maxVelocity(4200)
                         .maxAcceleration(6000)
-                        .allowedClosedLoopError(0.5);
+                        .allowedClosedLoopError(0.25);
 
                 intakeConfig.inverted(true).idleMode(IdleMode.kBrake).smartCurrentLimit(40);
                 }
