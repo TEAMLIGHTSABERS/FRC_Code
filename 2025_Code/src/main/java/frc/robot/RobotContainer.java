@@ -5,7 +5,7 @@
 package frc.robot;
 
 import edu.wpi.first.math.MathUtil;
-
+import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
@@ -19,11 +19,10 @@ import frc.robot.subsystems.ElevatorSubsystem;
 import frc.robot.subsystems.ElevatorSubsystem.Setpoint;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 
+
 import com.pathplanner.lib.auto.AutoBuilder;
 import com.pathplanner.lib.auto.NamedCommands;
-//import com.pathplanner.lib.auto.NamedCommands;
-import com.pathplanner.lib.commands.PathPlannerAuto;
-//import com.pathplanner.lib.path.PathPlannerPath; //Only needed for on-the-fly pathplanning
+
 
 /*
  * This class is where the bulk of the robot should be declared.  Since Command-based is a
@@ -32,6 +31,7 @@ import com.pathplanner.lib.commands.PathPlannerAuto;
  * (including subsystems, commands, and button mappings) should be declared here.
  */
 public class RobotContainer {
+ 
   // The robot's subsystems
   private final DriveSubsystem m_robotDrive = new DriveSubsystem();
   private final ElevatorSubsystem m_elevatorSubSystem = new ElevatorSubsystem();
