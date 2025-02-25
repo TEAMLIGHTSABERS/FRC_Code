@@ -132,8 +132,8 @@ public class ElevatorSubsystem extends SubsystemBase {
          * setpoints.
          */
         private void moveToSetpoint() {
-        wristClosedLoopController.setReference(wristCurrentTarget, ControlType.kMAXMotionPositionControl);
-        elevatorClosedLoopController.setReference(elevatorCurrentTarget, ControlType.kMAXMotionPositionControl);
+            elevatorClosedLoopController.setReference(elevatorCurrentTarget, ControlType.kMAXMotionPositionControl);
+            wristClosedLoopController.setReference(wristCurrentTarget, ControlType.kMAXMotionPositionControl);
         }
     
         /** Zero the elevator encoder when the limit switch is pressed. */

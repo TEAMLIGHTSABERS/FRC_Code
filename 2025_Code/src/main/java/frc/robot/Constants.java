@@ -37,12 +37,12 @@ public final class Constants {
 
       public static final class WristSetpoints{
         public static final double kWFeederStation = 0;
-        public static final double kWLevel1 = 2.5;
-        public static final double kWLevel2 = 2.5;
-        public static final double kWLevel3 = 2.5;
-        public static final double kWLevel4 = 4;
+        public static final double kWLevel1 = 0;
+        public static final double kWLevel2 = .0563;
+        public static final double kWLevel3 = 0;
+        public static final double kWLevel4 = 0;
         public static double kWDriverInput = 0;
-        public static double wristConversionFactor = 36;
+        public static double wristConversionFactor = .02777;
       }
 
       public static final class IntakeSetpoints{

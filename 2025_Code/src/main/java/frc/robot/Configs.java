@@ -32,13 +32,13 @@ public final class Configs {
                         .outputRange(-1, 1)
                         .maxMotion
                         // Set MAXMotion parameters for position control
-                        .maxVelocity(500)
-                        .maxAcceleration(750)
-                        .allowedClosedLoopError(0.1);
+                        .maxVelocity(100)
+                        .maxAcceleration(200)
+                        .allowedClosedLoopError(0.01);
                 
-                wristConfig
-                        .encoder
-                        .positionConversionFactor(WristSetpoints.wristConversionFactor);
+                //wristConfig
+                        //.encoder
+                        //.positionConversionFactor(WristSetpoints.wristConversionFactor);
                         
                 // Configure basic settings of the elevator motors
                 l_elevatorConfig.idleMode(IdleMode.kBrake).smartCurrentLimit(50).voltageCompensation(12);
