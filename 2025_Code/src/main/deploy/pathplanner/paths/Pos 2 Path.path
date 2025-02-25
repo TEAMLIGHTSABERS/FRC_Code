@@ -33,7 +33,7 @@
   "pointTowardsZones": [],
   "eventMarkers": [
     {
-      "name": "m_elevatorSubSystem.setSetpointReef",
+      "name": "Level 2",
       "waypointRelativePos": 0.7032288698955357,
       "endWaypointRelativePos": 1.0,
       "command": null
