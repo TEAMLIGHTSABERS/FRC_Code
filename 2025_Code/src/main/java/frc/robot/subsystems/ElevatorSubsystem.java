@@ -169,9 +169,12 @@ public class ElevatorSubsystem extends SubsystemBase {
         }
     
         /* Prep for dropping off at level 2 of the reef */
-        /*public void setSetpointReef2(){
-            setSetpointCommand(Setpoint.kLevel2);
-        }*/
+        //public void setSetpointReef2(){
+        //    setSetpointCommand(Setpoint.kLevel2);
+        //}
+        public Command setSetpointReef2(){
+            return setSetpointCommand(Setpoint.kLevel2);
+        }
     
         /* Prep for dropping off at level 4 of the reef */
         /*public void setSetpointReef4(){
