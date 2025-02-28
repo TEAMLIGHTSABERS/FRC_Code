@@ -52,6 +52,15 @@ public final class Constants {
         public static final double kReverse = -0.25;
       }
   }
+
+  public static final class ClimbSubsystemConstants {
+    public static final int kClimbMotorCanId = 5;
+
+    public static final class ClimbSetpoints {
+      public static final double kClimbUp = 0.5;
+      public static final double kClimbDown = -0.5;
+    }
+  }
   
   public static final class DriveConstants {
     // Driving Parameters - Note that these are not the maximum capable speeds of

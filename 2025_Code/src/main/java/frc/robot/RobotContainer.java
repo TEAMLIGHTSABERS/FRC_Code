@@ -10,16 +10,18 @@ import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
 import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.RunCommand;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import frc.robot.Constants.OIConstants;
+import frc.robot.subsystems.ClimbSubsystem;
 import frc.robot.subsystems.DriveSubsystem;
 import frc.robot.subsystems.ElevatorSubsystem;
 import frc.robot.subsystems.ElevatorSubsystem.Setpoint;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 
-
+import com.fasterxml.jackson.databind.util.Named;
 import com.pathplanner.lib.auto.AutoBuilder;
 import com.pathplanner.lib.auto.NamedCommands;
 
@@ -35,6 +37,7 @@ public class RobotContainer {
   // The robot's subsystems
   private final DriveSubsystem m_robotDrive = new DriveSubsystem();
   private final ElevatorSubsystem m_elevatorSubSystem = new ElevatorSubsystem();
+  private final ClimbSubsystem m_climbSubsystem = new ClimbSubsystem();
   
   // A chooser for autonomous commands
   //SendableChooser<Command> m_chooser = new SendableChooser<>();
@@ -47,14 +50,16 @@ public class RobotContainer {
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
   public RobotContainer() {
 
+    //m_robotDrive.setupPathPlannerRobot();
+
     NamedCommands.registerCommand("Coral Station", m_elevatorSubSystem.setSetpointCommand(Setpoint.kFeederStation));
     NamedCommands.registerCommand("Level 2", m_elevatorSubSystem.setSetpointCommand(Setpoint.kLevel2));
     NamedCommands.registerCommand("Level 3", m_elevatorSubSystem.setSetpointCommand(Setpoint.kLevel3));
     NamedCommands.registerCommand("Level 4", m_elevatorSubSystem.setSetpointCommand(Setpoint.kLevel4));
     
-    autoChooser = AutoBuilder.buildAutoChooser();
+    /*autoChooser = AutoBuilder.buildAutoChooser();
     ShuffleboardTab autoTab = Shuffleboard.getTab("Auto");
-    autoTab.add(autoChooser).withPosition(1,1);
+    autoTab.add(autoChooser).withPosition(1,1);*/
     
     //SmartDashboard.putData("Auto Chooser", autoChooser);
     //SmartDashboard.putData("New Auto", new PathPlannerAuto("New Auto"));
@@ -114,6 +119,12 @@ public class RobotContainer {
     // Left Bumper -> Wrist to Driver Input
     m_driverController.leftBumper().onTrue(m_elevatorSubSystem.setSetpointCommand(Setpoint.kDriverInput));
 
+    // X Button -> Climb UP
+    m_driverController.x().whileTrue(m_climbSubsystem.climbUpCommand());
+
+    // Left Trigger -> Climb Down
+    m_driverController.leftTrigger(OIConstants.kTriggerButtonThreshold).whileTrue(m_climbSubsystem.climbDownCommand());
+
     /**Extra Button Commands
       // Right Bumper -> Elevator to Driver Input
     //m_driverController.rightBumper().onTrue(m_elevatorSubSystem.setSetpointCommand(Setpoint.kDriverInput));
@@ -131,6 +142,11 @@ public class RobotContainer {
     // when idle    
     //m_driverController
     //    .b().onTrue(m_elevatorSubSystem.setSetpointCommand(Setpoint.kFeederStation));*/
+
+    autoChooser = AutoBuilder.buildAutoChooser();
+    ShuffleboardTab autoTab = Shuffleboard.getTab("Auto");
+    autoTab.add(autoChooser).withPosition(1,1);
+    
   }
      
 

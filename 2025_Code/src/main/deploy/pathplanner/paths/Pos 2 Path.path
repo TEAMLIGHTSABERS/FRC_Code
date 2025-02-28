@@ -33,9 +33,9 @@
   "pointTowardsZones": [],
   "eventMarkers": [
     {
-      "name": "frc.robot.subsystems.ElevatorSubsystem.setSetpointReef2()",
-      "waypointRelativePos": 0.7032288698955357,
-      "endWaypointRelativePos": 1.0,
+      "name": "Level 2",
+      "waypointRelativePos": 0.20238095238095222,
+      "endWaypointRelativePos": null,
       "command": null
     }
   ],

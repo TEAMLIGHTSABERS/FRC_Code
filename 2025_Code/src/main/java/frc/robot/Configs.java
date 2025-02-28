@@ -9,7 +9,16 @@ import frc.robot.Constants.ElevatorSubsystemConstants.WristSetpoints;
 import frc.robot.Constants.ElevatorSubsystemConstants;
 
 public final class Configs {
-        
+    
+    public static final class ClimbSubsystem{
+        public static final SparkMaxConfig climbConfig = new SparkMaxConfig();
+
+        static {
+                // Configure basic settings of the climb motor
+                climbConfig.inverted(false).idleMode(IdleMode.kBrake).smartCurrentLimit(40);
+        }
+    }    
+
     public static final class ElevatorSubsystem {
         public static final SparkMaxConfig l_elevatorConfig = new SparkMaxConfig();
         public static final SparkMaxConfig f_elevatorConfig = new SparkMaxConfig();
