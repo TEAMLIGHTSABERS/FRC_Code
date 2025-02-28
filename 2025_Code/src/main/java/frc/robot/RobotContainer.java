@@ -112,7 +112,7 @@ public class RobotContainer {
       .onTrue(m_elevatorSubSystem.setSetpointCommand(Setpoint.kFeederStation));
 
     // Left Bumper -> Wrist to Driver Input
-    m_driverController.leftBumper().whileTrue(m_elevatorSubSystem.setSetpointCommand(Setpoint.kWDriverInput));
+    m_driverController.leftBumper().onTrue(m_elevatorSubSystem.setSetpointCommand(Setpoint.kDriverInput));
 
     /**Extra Button Commands
       // Right Bumper -> Elevator to Driver Input

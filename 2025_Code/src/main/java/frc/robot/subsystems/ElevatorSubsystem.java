@@ -58,7 +58,7 @@ public class ElevatorSubsystem extends SubsystemBase {
     private boolean wasResetByButton = false;
     private boolean wasResetByLimit = false;
     private double elevatorCurrentTarget = ElevatorSetpoints.kFeederStation;
-    private double wristCurrentTarget = WristSetpoints.kWFeederStation;
+    private double wristCurrentTarget;
     private double intakeDirection = IntakeSetpoints.kReverse;
 
     /*// Simulation setup and variables
@@ -123,6 +123,7 @@ public class ElevatorSubsystem extends SubsystemBase {
 
         SmartDashboard.setDefaultNumber("Elevator Driver Input", 0);
         SmartDashboard.setDefaultNumber("Wrist Driver Input", 0);
+                
         
     }
 
@@ -134,6 +135,7 @@ public class ElevatorSubsystem extends SubsystemBase {
         private void moveToSetpoint() {
             elevatorClosedLoopController.setReference(elevatorCurrentTarget, ControlType.kMAXMotionPositionControl);
             wristClosedLoopController.setReference(wristCurrentTarget, ControlType.kMAXMotionPositionControl);
+            //wristClosedLoopController.setReference(wristCurrentTarget, ControlType.kPosition);
         }
     
         /** Zero the elevator encoder when the limit switch is pressed. */
@@ -160,26 +162,26 @@ public class ElevatorSubsystem extends SubsystemBase {
             wasResetByButton = false;
         }
         }
-
+/*
         /* Set the intake power in the range of [-1,1]. */
         private void setIntakePower(double power){
             intakeMotor.set(power);
         }
     
         /* Prep for dropping off at level 2 of the reef */
-        public void setSetpointReef2(){
+        /*public void setSetpointReef2(){
             setSetpointCommand(Setpoint.kLevel2);
-        }
+        }*/
     
         /* Prep for dropping off at level 4 of the reef */
-        public void setSetpointReef4(){
+        /*public void setSetpointReef4(){
             setSetpointCommand(Setpoint.kLevel4);
-        }
+        }*/
     
         /* Prep for picking up at the coral feeder station */
-        public void setSetpointCoralStation(){
+        /*public void setSetpointCoralStation(){
             setSetpointCommand(Setpoint.kFeederStation);
-        }
+        }*/
     
         /**
          * Command to set the subsystem setpoint. This will set the arm and elevator to their predefined
@@ -216,8 +218,10 @@ public class ElevatorSubsystem extends SubsystemBase {
                     break;
                 case kDriverInput:            
                     elevatorCurrentTarget = ElevatorSetpoints.kDriverInput;
+                    wristCurrentTarget = WristSetpoints.kWDriverInput;
                     break;
                 case kWDriverInput:
+                    elevatorCurrentTarget = 0;
                     wristCurrentTarget = WristSetpoints.kWDriverInput;
                     break;
                 }

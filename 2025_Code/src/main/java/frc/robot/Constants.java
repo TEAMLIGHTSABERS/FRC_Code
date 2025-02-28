@@ -23,31 +23,33 @@ public final class Constants {
     public static final class ElevatorSubsystemConstants {
       public static final int kElevatorLeadCanId = 3;
       public static final int kElevatorFollowCanId = 4;
-      public static final int kIntakeMotorCanId = 6;
-      public static final int kWristMotorCanId = 7;
+      public static final int kIntakeMotorCanId = 7;
+      public static final int kWristMotorCanId = 6;
 
       public static final class ElevatorSetpoints { //need to adjust these for actual positions
         public static final int kFeederStation = 0;
         public static final int kLevel1 = 0;
-        public static final int kLevel2 = 5;
-        public static final int kLevel3 = 10;
-        public static final double kLevel4 = 52.5;
+        public static final double kLevel2 = 2;
+        public static final int kLevel3 = 17;
+        public static final double kLevel4 = 52;
         public static double kDriverInput = 0;
       }
 
       public static final class WristSetpoints{
-        public static final double kWFeederStation = 0;
+        public static final double kWFeederStation = -1;
         public static final double kWLevel1 = 0;
-        public static final double kWLevel2 = .0563;
-        public static final double kWLevel3 = 0;
-        public static final double kWLevel4 = 0;
+        public static final double kWLevel2 = -2.0;
+        public static final double kWLevel3 = -2.0;
+        public static final double kWLevel4 = -2.5;
         public static double kWDriverInput = 0;
-        public static double wristConversionFactor = .02777;
+        
+        public static double wristP = 0.25;
+        public static double wristD = 0.005;
       }
 
       public static final class IntakeSetpoints{
-        public static final double kForward = 0.5;
-        public static final double kReverse = -0.5;
+        public static final double kForward = 0.25;
+        public static final double kReverse = -0.25;
       }
   }
   

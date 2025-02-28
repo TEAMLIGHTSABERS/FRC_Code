@@ -15,31 +15,30 @@ public final class Configs {
         public static final SparkMaxConfig f_elevatorConfig = new SparkMaxConfig();
         public static final SparkMaxConfig wristConfig = new SparkMaxConfig();
         public static final SparkMaxConfig intakeConfig = new SparkMaxConfig();
+
         
         static {
                 // Configure basic settings of the wrist motor
-                wristConfig.idleMode(IdleMode.kBrake).smartCurrentLimit(40).voltageCompensation(12);
+                wristConfig.idleMode(IdleMode.kBrake).smartCurrentLimit(40).inverted(true).voltageCompensation(12);
 
                 /*
                  * Configure the closed loop controller. We want to make sure we set the
                  * feedback sensor as the primary encoder.
                  */
+                
                 wristConfig
                         .closedLoop
                         .feedbackSensor(FeedbackSensor.kPrimaryEncoder)
                         // Set PID values for position control
-                        .p(0.55)
+                        .p(WristSetpoints.wristP)
+                        .d(WristSetpoints.wristD)
                         .outputRange(-1, 1)
                         .maxMotion
                         // Set MAXMotion parameters for position control
-                        .maxVelocity(100)
-                        .maxAcceleration(200)
-                        .allowedClosedLoopError(0.01);
-                
-                //wristConfig
-                        //.encoder
-                        //.positionConversionFactor(WristSetpoints.wristConversionFactor);
-                        
+                        .maxVelocity(420)
+                        .maxAcceleration(600)
+                        .allowedClosedLoopError(0.05);
+                                                     
                 // Configure basic settings of the elevator motors
                 l_elevatorConfig.idleMode(IdleMode.kBrake).smartCurrentLimit(50).voltageCompensation(12);
                 f_elevatorConfig.idleMode(IdleMode.kBrake).follow(ElevatorSubsystemConstants.kElevatorLeadCanId, true).inverted(true).smartCurrentLimit(50).voltageCompensation(12);
