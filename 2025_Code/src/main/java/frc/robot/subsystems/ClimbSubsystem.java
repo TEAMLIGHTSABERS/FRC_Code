@@ -12,7 +12,7 @@ import com.revrobotics.spark.SparkMax;
 import frc.robot.Configs;
 import frc.robot.Constants.ClimbSubsystemConstants;
 import frc.robot.Constants.ClimbSubsystemConstants.ClimbSetpoints;
-import frc.robot.Constants.ElevatorSubsystemConstants.IntakeSetpoints;
+
 
 
 public class ClimbSubsystem extends SubsystemBase{

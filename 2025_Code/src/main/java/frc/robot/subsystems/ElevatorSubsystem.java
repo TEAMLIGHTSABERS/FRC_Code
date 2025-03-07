@@ -4,13 +4,17 @@ import com.revrobotics.RelativeEncoder;
 import com.revrobotics.spark.SparkBase.ControlType;
 import com.revrobotics.spark.SparkBase.PersistMode;
 import com.revrobotics.spark.SparkBase.ResetMode;
+import com.revrobotics.spark.ClosedLoopSlot;
 import com.revrobotics.spark.SparkClosedLoopController;
 import com.revrobotics.spark.SparkLowLevel.MotorType;
 import com.revrobotics.spark.SparkMax;
+
+import edu.wpi.first.math.controller.ArmFeedforward;
 import edu.wpi.first.wpilibj.RobotController;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import edu.wpi.first.wpilibj.Timer;
 import frc.robot.Configs;
 import frc.robot.Constants.ElevatorSubsystemConstants;
 import frc.robot.Constants.ElevatorSubsystemConstants.ElevatorSetpoints;
@@ -28,6 +32,8 @@ public class ElevatorSubsystem extends SubsystemBase {
         kDriverInput,
         kWDriverInput;
     }
+
+    private final Timer timer = new Timer();
 
     /*Elevator Motor Initialization - Lead motor and follower */
     private SparkMax l_elevatorMotor =
@@ -60,6 +66,9 @@ public class ElevatorSubsystem extends SubsystemBase {
     private double elevatorCurrentTarget = ElevatorSetpoints.kFeederStation;
     private double wristCurrentTarget;
     private double intakeDirection = IntakeSetpoints.kReverse;
+
+    //Create wrist motor feedforward to assist the MAXMotion PIDcontroller
+    private final ArmFeedforward wristFF = new ArmFeedforward(WristSetpoints.wristkS, WristSetpoints.wristkG, WristSetpoints.wristkV);
 
     /*// Simulation setup and variables
     private DCMotor elevatorMotorModel = DCMotor.getNeoVortex(1);
@@ -123,7 +132,15 @@ public class ElevatorSubsystem extends SubsystemBase {
 
         SmartDashboard.setDefaultNumber("Elevator Driver Input", 0);
         SmartDashboard.setDefaultNumber("Wrist Driver Input", 0);
-                
+
+        SmartDashboard.setDefaultNumber("Wrist P-Value", WristSetpoints.wristP);
+        SmartDashboard.setDefaultNumber("Wrist D-Value", WristSetpoints.wristD);
+        SmartDashboard.setDefaultBoolean("PID Enter", false);
+
+        SmartDashboard.setDefaultNumber("Wrist kG", WristSetpoints.wristkG);
+        SmartDashboard.setDefaultNumber("Wrist kV", WristSetpoints.wristkV);
+        SmartDashboard.setDefaultNumber("Wrist kS", WristSetpoints.wristkS);
+        
         
     }
 
@@ -133,9 +150,15 @@ public class ElevatorSubsystem extends SubsystemBase {
          * setpoints.
          */
         private void moveToSetpoint() {
+            double targetDegrees = wristCurrentTarget * 360 / 9 + 90;
+
+            double ffOutput = wristFF.calculate(Math.toRadians(targetDegrees),0);
+            //double ffOutput = wristFF.calculate(90,0);
+            
             elevatorClosedLoopController.setReference(elevatorCurrentTarget, ControlType.kMAXMotionPositionControl);
             wristClosedLoopController.setReference(wristCurrentTarget, ControlType.kMAXMotionPositionControl);
-            //wristClosedLoopController.setReference(wristCurrentTarget, ControlType.kPosition);
+            //wristClosedLoopController.setReference(wristCurrentTarget, ControlType.kMAXMotionPositionControl, ClosedLoopSlot.kSlot0, ffOutput);
+            //wristClosedLoopController.setReference(wristCurrentTarget, ControlType.kPosition, ClosedLoopSlot.kSlot0, ffOutput);
         }
     
         /** Zero the elevator encoder when the limit switch is pressed. */
@@ -167,25 +190,11 @@ public class ElevatorSubsystem extends SubsystemBase {
         private void setIntakePower(double power){
             intakeMotor.set(power);
         }
-    
-        /* Prep for dropping off at level 2 of the reef */
-        //public void setSetpointReef2(){
-        //    setSetpointCommand(Setpoint.kLevel2);
-        //}
-        public Command setSetpointReef2(){
-            return setSetpointCommand(Setpoint.kLevel2);
+
+        private void stopIntake(){
+            intakeMotor.set(0);
         }
-    
-        /* Prep for dropping off at level 4 of the reef */
-        /*public void setSetpointReef4(){
-            setSetpointCommand(Setpoint.kLevel4);
-        }*/
-    
-        /* Prep for picking up at the coral feeder station */
-        /*public void setSetpointCoralStation(){
-            setSetpointCommand(Setpoint.kFeederStation);
-        }*/
-    
+        
         /**
          * Command to set the subsystem setpoint. This will set the arm and elevator to their predefined
          * positions for the given setpoint.
@@ -255,6 +264,21 @@ public class ElevatorSubsystem extends SubsystemBase {
             () -> this.setIntakePower(intakeDirection), () -> this.setIntakePower(0.0));
         }
         
+        public Command autoIntakeCommand(double power, double time){
+            return runOnce(() -> {
+                timer.reset();
+                timer.start();
+                setIntakePower(power);
+            }).andThen(run(() -> {
+                if (timer.get() >= time) {
+                    stopIntake();
+                }
+            }).until(() -> timer.get() >= time))
+              .finallyDo((interrupted) -> {
+                  stopIntake();
+                  timer.stop();
+              });
+        }
     
         @Override
         public void periodic() {
@@ -264,10 +288,20 @@ public class ElevatorSubsystem extends SubsystemBase {
 
         ElevatorSetpoints.kDriverInput = SmartDashboard.getNumber("Elevator Driver Input", 0);
         WristSetpoints.kWDriverInput = SmartDashboard.getNumber("Wrist Driver Input", 0);
+
+        if(SmartDashboard.getBoolean("PID Enter", true)){
+        WristSetpoints.wristP = SmartDashboard.getNumber("Wrist P-Value", WristSetpoints.wristP);
+        WristSetpoints.wristD = SmartDashboard.getNumber("Wrist D-Value", WristSetpoints.wristD);
+        WristSetpoints.wristkG = SmartDashboard.getNumber("Wrist kG", WristSetpoints.wristkG);
+        WristSetpoints.wristkV = SmartDashboard.getNumber("Wrist kV", WristSetpoints.wristkV);
+        WristSetpoints.wristkS = SmartDashboard.getNumber("Wrist kS", WristSetpoints.wristkS);
+        }
     
         // Display subsystem values
         SmartDashboard.putNumber("Wrist/Target Position", wristCurrentTarget);
         SmartDashboard.putNumber("Wrist/Actual Position", wristEncoder.getPosition());
+        SmartDashboard.putNumber("Wrist/Actual Velocity", wristEncoder.getVelocity());
+        SmartDashboard.putNumber("Wrist/P-Value", WristSetpoints.wristP);
         SmartDashboard.putNumber("Elevator/Target Position", elevatorCurrentTarget);
         SmartDashboard.putNumber("Elevator/Actual Position", elevatorEncoder.getPosition());
         SmartDashboard.putNumber("Elevator/Actual Velocity", elevatorEncoder.getVelocity());

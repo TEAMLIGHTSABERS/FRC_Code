@@ -30,7 +30,7 @@ public final class Constants {
         public static final int kFeederStation = 0;
         public static final int kLevel1 = 0;
         public static final double kLevel2 = 2;
-        public static final int kLevel3 = 17;
+        public static final int kLevel3 = 18;
         public static final double kLevel4 = 52;
         public static double kDriverInput = 0;
       }
@@ -45,6 +45,10 @@ public final class Constants {
         
         public static double wristP = 0.25;
         public static double wristD = 0.005;
+        public static double wristkG = 0.96;
+        public static double wristkV = 0.18;
+        public static double wristkA = 0.02;
+        public static double wristkS  = 0.45;
       }
 
       public static final class IntakeSetpoints{

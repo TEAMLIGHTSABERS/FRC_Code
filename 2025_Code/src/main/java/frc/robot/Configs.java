@@ -29,9 +29,9 @@ public final class Configs {
         static {
                 // Configure basic settings of the wrist motor
                 wristConfig.idleMode(IdleMode.kBrake).smartCurrentLimit(40).inverted(true).voltageCompensation(12);
-
+                                             
                 /*
-                 * Configure the closed loop controller. We want to make sure we set the
+                 * Configure the closed loop controller with MaxMotion. We want to make sure we set the
                  * feedback sensor as the primary encoder.
                  */
                 
@@ -47,6 +47,16 @@ public final class Configs {
                         .maxVelocity(420)
                         .maxAcceleration(600)
                         .allowedClosedLoopError(0.05);
+
+                /*wristConfig
+                        .closedLoop
+                        .feedbackSensor(FeedbackSensor.kPrimaryEncoder)
+                        // Set PID values for position control
+                        .p(WristSetpoints.wristP)
+                        .d(WristSetpoints.wristD)
+                        .outputRange(-.25, .25);*/
+
+
                                                      
                 // Configure basic settings of the elevator motors
                 l_elevatorConfig.idleMode(IdleMode.kBrake).smartCurrentLimit(50).voltageCompensation(12);
