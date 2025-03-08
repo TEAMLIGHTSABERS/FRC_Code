@@ -52,8 +52,8 @@ public final class Constants {
       }
 
       public static final class IntakeSetpoints{
-        public static final double kForward = 0.25;
-        public static final double kReverse = -0.25;
+        public static final double kForward = 0.5;
+        public static final double kReverse = -0.5;
       }
   }
 
@@ -61,8 +61,8 @@ public final class Constants {
     public static final int kClimbMotorCanId = 5;
 
     public static final class ClimbSetpoints {
-      public static final double kClimbUp = 0.5;
-      public static final double kClimbDown = -0.5;
+      public static final double kClimbUp = 1.0;
+      public static final double kClimbDown = -1.0;
     }
   }
   

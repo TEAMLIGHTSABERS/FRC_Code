@@ -120,32 +120,14 @@ public class RobotContainer {
     m_driverController.rightTrigger(OIConstants.kTriggerButtonThreshold)
       .onTrue(m_elevatorSubsystem.setSetpointCommand(Setpoint.kFeederStation));
 
-    // Left Bumper -> Wrist to Driver Input
-    m_driverController.leftBumper().onTrue(m_elevatorSubsystem.setSetpointCommand(Setpoint.kDriverInput));
-
-    // X Button -> Climb UP
-    m_driverController.x().whileTrue(m_climbSubsystem.climbUpCommand());
+    // X Button -> Driver Input
+    m_driverController.x().onTrue(m_elevatorSubsystem.setSetpointCommand(Setpoint.kDriverInput));
 
     // Left Trigger -> Climb Down
     m_driverController.leftTrigger(OIConstants.kTriggerButtonThreshold).whileTrue(m_climbSubsystem.climbDownCommand());
 
-    /**Extra Button Commands
-      // Right Bumper -> Elevator to Driver Input
-    //m_driverController.rightBumper().onTrue(m_elevatorSubsystem.setSetpointCommand(Setpoint.kDriverInput));
-
-    // Right Trigger  -> Wrist to Driver Input
-    //m_driverController.rightTrigger(OIConstants.kTriggerButtonThreshold).whileTrue(m_elevatorSubsystem.setSetpointCommand((Setpoint.kDriverInput)));
-
-    // Left Bumper -> Run tube intake
-    //m_driverController.leftBumper().whileTrue(m_elevatorSubsystem.forwardIntakeCommand());
-
-    // Left Trigger -> Run ball intake in reverse, set to stow when idle
-    //m_driverController.leftTrigger(OIConstants.kTriggerButtonThreshold).whileTrue(m_elevatorSubsystem.reverseIntakeCommand());
-
-    // B Button -> Elevator/Wrist to human player position, set ball intake to stow
-    // when idle    
-    //m_driverController
-    //    .b().onTrue(m_elevatorSubsystem.setSetpointCommand(Setpoint.kFeederStation));*/
+    // Left Bumper -> Climb Up
+    m_driverController.leftBumper().whileTrue(m_climbSubsystem.climbUpCommand());
 
     autoChooser = AutoBuilder.buildAutoChooser();
     ShuffleboardTab autoTab = Shuffleboard.getTab("Auto");

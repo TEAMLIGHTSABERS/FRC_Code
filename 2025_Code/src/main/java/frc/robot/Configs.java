@@ -28,7 +28,7 @@ public final class Configs {
         
         static {
                 // Configure basic settings of the wrist motor
-                wristConfig.idleMode(IdleMode.kBrake).smartCurrentLimit(40).inverted(true).voltageCompensation(12);
+                wristConfig.idleMode(IdleMode.kBrake).smartCurrentLimit(40).inverted(false).voltageCompensation(12);
                                              
                 /*
                  * Configure the closed loop controller with MaxMotion. We want to make sure we set the
