@@ -30,7 +30,7 @@ public final class Constants {
         public static final int kFeederStation = 0;
         public static final int kLevel1 = 0;
         public static final double kLevel2 = 2;
-        public static final int kLevel3 = 18;
+        public static final int kLevel3 = 19;
         public static final double kLevel4 = 53;
         public static double kDriverInput = 0;
         public static double kElevatorP = 0.01;
@@ -55,7 +55,7 @@ public final class Constants {
 
       public static final class IntakeSetpoints{
         public static final double kForward = 0.5;
-        public static final double kL4Forward = 0.1;
+        public static final double kL4Forward = 0.5;
         public static final double kReverse = -0.5;
       }
   }
