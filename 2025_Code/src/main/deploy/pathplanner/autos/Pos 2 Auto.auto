@@ -26,13 +26,7 @@
         {
           "type": "named",
           "data": {
-            "name": "Run Intake"
-          }
-        },
-        {
-          "type": "wait",
-          "data": {
-            "waitTime": 2.0
+            "name": "Coral Out"
           }
         }
       ]

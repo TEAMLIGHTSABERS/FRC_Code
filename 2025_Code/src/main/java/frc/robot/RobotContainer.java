@@ -21,6 +21,7 @@ import frc.robot.subsystems.DriveSubsystem;
 import frc.robot.subsystems.ElevatorSubsystem;
 import frc.robot.subsystems.ElevatorSubsystem.Setpoint;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
+import edu.wpi.first.math.geometry.Translation2d;
 
 import com.fasterxml.jackson.databind.util.Named;
 import com.pathplanner.lib.auto.AutoBuilder;
@@ -39,6 +40,8 @@ public class RobotContainer {
   private final DriveSubsystem m_robotDrive = new DriveSubsystem();
   private final ElevatorSubsystem m_elevatorSubsystem = new ElevatorSubsystem();
   private final ClimbSubsystem m_climbSubsystem = new ClimbSubsystem();
+ 
+
   
   // A chooser for autonomous commands
   //SendableChooser<Command> m_chooser = new SendableChooser<>();
@@ -72,7 +75,7 @@ public class RobotContainer {
     configureButtonBindings();
 
     // Configure default commands
-    m_robotDrive.setDefaultCommand(
+    /*m_robotDrive.setDefaultCommand(
         // The left stick controls translation of the robot.
         // Turning is controlled by the X axis of the right stick.
         new RunCommand(
@@ -82,7 +85,20 @@ public class RobotContainer {
                     -MathUtil.applyDeadband(m_driverController.getLeftX(), OIConstants.kDriveDeadband),
                     -MathUtil.applyDeadband(m_driverController.getRightX(), OIConstants.kDriveDeadband),
                     true),
-                    m_robotDrive));  
+                    m_robotDrive));*/
+                    
+    // Configure default commands
+      m_robotDrive.setDefaultCommand(
+      // The left stick controls translation of the robot.
+      // Turning is controlled by the X axis of the right stick.
+      new RunCommand(
+          () ->
+              m_robotDrive.drive(
+                  -m_robotDrive.applyDeadbandAndCurve(m_driverController.getLeftY(), OIConstants.kDriveDeadband, OIConstants.kDriveExponent),
+                  -m_robotDrive.applyDeadbandAndCurve(m_driverController.getLeftX(), OIConstants.kDriveDeadband, OIConstants.kDriveExponent),
+                  -m_robotDrive.applyDeadbandAndCurve(m_driverController.getRightX(), OIConstants.kDriveDeadband, OIConstants.kDriveExponent),
+                  true),
+                  m_robotDrive));
   }
 
   /**

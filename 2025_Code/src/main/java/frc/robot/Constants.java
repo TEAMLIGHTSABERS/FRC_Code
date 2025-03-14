@@ -31,16 +31,18 @@ public final class Constants {
         public static final int kLevel1 = 0;
         public static final double kLevel2 = 2;
         public static final int kLevel3 = 18;
-        public static final double kLevel4 = 52;
+        public static final double kLevel4 = 53;
         public static double kDriverInput = 0;
+        public static double kElevatorP = 0.01;
+        public static double kElevatorD = 0;
       }
 
       public static final class WristSetpoints{
-        public static final double kWFeederStation = -1;
+        public static final double kWFeederStation = -5.25;
         public static final double kWLevel1 = 0;
-        public static final double kWLevel2 = -2.0;
-        public static final double kWLevel3 = -2.0;
-        public static final double kWLevel4 = -2.5;
+        public static final double kWLevel2 = -12;
+        public static final double kWLevel3 = -12;
+        public static final double kWLevel4 = -14.5; //Previous: -13.61
         public static double kWDriverInput = 0;
         
         public static double wristP = 0.25;
@@ -53,6 +55,7 @@ public final class Constants {
 
       public static final class IntakeSetpoints{
         public static final double kForward = 0.5;
+        public static final double kL4Forward = 0.1;
         public static final double kReverse = -0.5;
       }
   }
@@ -124,7 +127,8 @@ public final class Constants {
 
   public static final class OIConstants {
     public static final int kDriverControllerPort = 0;
-    public static final double kDriveDeadband = 0.1;
+    public static final double kDriveDeadband = 0.05;
+    public static final double kDriveExponent = 2.5;
     public static final double kTriggerButtonThreshold = 0.2;
   }
 

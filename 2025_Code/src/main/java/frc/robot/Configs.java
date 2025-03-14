@@ -5,6 +5,7 @@ import com.revrobotics.spark.config.ClosedLoopConfig.FeedbackSensor;
 import com.revrobotics.spark.config.SparkBaseConfig.IdleMode;
 import com.revrobotics.spark.config.LimitSwitchConfig.Type;
 import frc.robot.Constants.ModuleConstants;
+import frc.robot.Constants.ElevatorSubsystemConstants.ElevatorSetpoints;
 import frc.robot.Constants.ElevatorSubsystemConstants.WristSetpoints;
 import frc.robot.Constants.ElevatorSubsystemConstants;
 
@@ -81,7 +82,8 @@ public final class Configs {
                         .closedLoop
                         .feedbackSensor(FeedbackSensor.kPrimaryEncoder)
                         // Set PID values for position control
-                        .p(0.01)
+                        .p(ElevatorSetpoints.kElevatorP)
+                        .d(ElevatorSetpoints.kElevatorD)
                         //velocityFF(0.0085)
                         .outputRange(-1, 1)
                         .maxMotion

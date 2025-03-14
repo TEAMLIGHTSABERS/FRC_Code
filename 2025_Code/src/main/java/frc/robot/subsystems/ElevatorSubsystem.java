@@ -66,6 +66,7 @@ public class ElevatorSubsystem extends SubsystemBase {
     private double elevatorCurrentTarget = ElevatorSetpoints.kFeederStation;
     private double wristCurrentTarget;
     private double intakeDirection = IntakeSetpoints.kReverse;
+    private String scorePos = "Initialized";
 
     //Create wrist motor feedforward to assist the MAXMotion PIDcontroller
     private final ArmFeedforward wristFF = new ArmFeedforward(WristSetpoints.wristkS, WristSetpoints.wristkG, WristSetpoints.wristkV);
@@ -130,18 +131,20 @@ public class ElevatorSubsystem extends SubsystemBase {
         elevatorEncoder.setPosition(0);
         wristEncoder.setPosition(0);
 
+        SmartDashboard.setDefaultString("Scoring Position", scorePos);
+
         SmartDashboard.setDefaultNumber("Elevator Driver Input", 0);
         SmartDashboard.setDefaultNumber("Wrist Driver Input", 0);
 
         SmartDashboard.setDefaultNumber("Wrist P-Value", WristSetpoints.wristP);
         SmartDashboard.setDefaultNumber("Wrist D-Value", WristSetpoints.wristD);
+        SmartDashboard.setDefaultNumber("Elevator P-Value", ElevatorSetpoints.kElevatorP);
+        SmartDashboard.setDefaultNumber("Elevator D-Value", ElevatorSetpoints.kElevatorD);
         SmartDashboard.setDefaultBoolean("PID Enter", false);
 
-        SmartDashboard.setDefaultNumber("Wrist kG", WristSetpoints.wristkG);
+        /*SmartDashboard.setDefaultNumber("Wrist kG", WristSetpoints.wristkG);
         SmartDashboard.setDefaultNumber("Wrist kV", WristSetpoints.wristkV);
-        SmartDashboard.setDefaultNumber("Wrist kS", WristSetpoints.wristkS);
-        
-        
+        SmartDashboard.setDefaultNumber("Wrist kS", WristSetpoints.wristkS);*/
     }
 
         /**
@@ -207,26 +210,31 @@ public class ElevatorSubsystem extends SubsystemBase {
                     wristCurrentTarget = WristSetpoints.kWFeederStation;
                     elevatorCurrentTarget = ElevatorSetpoints.kFeederStation;
                     intakeDirection = IntakeSetpoints.kReverse;
+                    scorePos = "Coral Station";
                     break;
                 case kLevel1:
                     wristCurrentTarget = WristSetpoints.kWLevel1;
                     elevatorCurrentTarget = ElevatorSetpoints.kLevel1;
                     intakeDirection = IntakeSetpoints.kForward;
+                    scorePos = "Level 1";
                     break;
                 case kLevel2:
                     wristCurrentTarget = WristSetpoints.kWLevel2;
                     elevatorCurrentTarget = ElevatorSetpoints.kLevel2;
                     intakeDirection = IntakeSetpoints.kForward;
+                    scorePos = "Level 2";
                     break;
                 case kLevel3:
                     wristCurrentTarget = WristSetpoints.kWLevel3;
                     elevatorCurrentTarget = ElevatorSetpoints.kLevel3;
                     intakeDirection = IntakeSetpoints.kForward;
+                    scorePos = "Level 3";
                     break;
                 case kLevel4:
                     wristCurrentTarget = WristSetpoints.kWLevel4;
                     elevatorCurrentTarget = ElevatorSetpoints.kLevel4;
-                    intakeDirection = IntakeSetpoints.kForward;
+                    intakeDirection = IntakeSetpoints.kL4Forward;
+                    scorePos = "Level 4";
                     break;
                 case kDriverInput:            
                     elevatorCurrentTarget = ElevatorSetpoints.kDriverInput;
@@ -292,9 +300,12 @@ public class ElevatorSubsystem extends SubsystemBase {
         if(SmartDashboard.getBoolean("PID Enter", true)){
         WristSetpoints.wristP = SmartDashboard.getNumber("Wrist P-Value", WristSetpoints.wristP);
         WristSetpoints.wristD = SmartDashboard.getNumber("Wrist D-Value", WristSetpoints.wristD);
-        WristSetpoints.wristkG = SmartDashboard.getNumber("Wrist kG", WristSetpoints.wristkG);
+        ElevatorSetpoints.kElevatorP = SmartDashboard.getNumber("Elevator P-Value", ElevatorSetpoints.kElevatorP);
+        ElevatorSetpoints.kElevatorD = SmartDashboard.getNumber("Elevator D-Value", ElevatorSetpoints.kElevatorD);
+
+        /*WristSetpoints.wristkG = SmartDashboard.getNumber("Wrist kG", WristSetpoints.wristkG);
         WristSetpoints.wristkV = SmartDashboard.getNumber("Wrist kV", WristSetpoints.wristkV);
-        WristSetpoints.wristkS = SmartDashboard.getNumber("Wrist kS", WristSetpoints.wristkS);
+        WristSetpoints.wristkS = SmartDashboard.getNumber("Wrist kS", WristSetpoints.wristkS);*/
         }
     
         // Display subsystem values
@@ -302,9 +313,13 @@ public class ElevatorSubsystem extends SubsystemBase {
         SmartDashboard.putNumber("Wrist/Actual Position", wristEncoder.getPosition());
         SmartDashboard.putNumber("Wrist/Actual Velocity", wristEncoder.getVelocity());
         SmartDashboard.putNumber("Wrist/P-Value", WristSetpoints.wristP);
+
         SmartDashboard.putNumber("Elevator/Target Position", elevatorCurrentTarget);
         SmartDashboard.putNumber("Elevator/Actual Position", elevatorEncoder.getPosition());
         SmartDashboard.putNumber("Elevator/Actual Velocity", elevatorEncoder.getVelocity());
+        SmartDashboard.putNumber("Elevator/P-Value", ElevatorSetpoints.kElevatorP);
+        SmartDashboard.putNumber("Elevator/D-Value", ElevatorSetpoints.kElevatorD);
+        
         SmartDashboard.putNumber("Intake/Applied Output", intakeMotor.getAppliedOutput());
     
         /*// Update mechanism2d
