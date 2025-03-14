@@ -4,12 +4,12 @@ import com.revrobotics.RelativeEncoder;
 import com.revrobotics.spark.SparkBase.ControlType;
 import com.revrobotics.spark.SparkBase.PersistMode;
 import com.revrobotics.spark.SparkBase.ResetMode;
-import com.revrobotics.spark.ClosedLoopSlot;
+
 import com.revrobotics.spark.SparkClosedLoopController;
 import com.revrobotics.spark.SparkLowLevel.MotorType;
 import com.revrobotics.spark.SparkMax;
 
-import edu.wpi.first.math.controller.ArmFeedforward;
+//import edu.wpi.first.math.controller.ArmFeedforward;
 import edu.wpi.first.wpilibj.RobotController;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
@@ -69,35 +69,7 @@ public class ElevatorSubsystem extends SubsystemBase {
     private String scorePos = "Initialized";
 
     //Create wrist motor feedforward to assist the MAXMotion PIDcontroller
-    private final ArmFeedforward wristFF = new ArmFeedforward(WristSetpoints.wristkS, WristSetpoints.wristkG, WristSetpoints.wristkV);
-
-    /*// Simulation setup and variables
-    private DCMotor elevatorMotorModel = DCMotor.getNeoVortex(1);
-    private SparkFlexSim elevatorMotorSim;
-    private SparkLimitSwitchSim elevatorLimitSwitchSim;
-    private final ElevatorSim m_elevatorSim =
-        new ElevatorSim(
-            elevatorMotorModel,
-            SimulationRobotConstants.kElevatorGearing,
-            SimulationRobotConstants.kCarriageMass,
-            SimulationRobotConstants.kElevatorDrumRadius,
-            SimulationRobotConstants.kMinElevatorHeightMeters,
-            SimulationRobotConstants.kMaxElevatorHeightMeters,
-            true,
-            SimulationRobotConstants.kMinElevatorHeightMeters,
-            0.0,
-            0.0);
-
-    // Mechanism2d setup for subsystem
-    private final Mechanism2d m_mech2d = new Mechanism2d(50, 50);
-    private final MechanismRoot2d m_mech2dRoot = m_mech2d.getRoot("ElevatorArm Root", 25, 0);
-    private final MechanismLigament2d m_elevatorMech2d =
-        m_mech2dRoot.append(
-            new MechanismLigament2d(
-                "Elevator",
-                SimulationRobotConstants.kMinElevatorHeightMeters
-                    * SimulationRobotConstants.kPixelsPerMeter,
-                90));*/
+    //private final ArmFeedforward wristFF = new ArmFeedforward(WristSetpoints.wristkS, WristSetpoints.wristkG, WristSetpoints.wristkV);
 
     public ElevatorSubsystem() {
         /*
@@ -135,6 +107,7 @@ public class ElevatorSubsystem extends SubsystemBase {
 
         SmartDashboard.setDefaultNumber("Elevator Driver Input", 0);
         SmartDashboard.setDefaultNumber("Wrist Driver Input", 0);
+        SmartDashboard.setDefaultBoolean("Driver Input Enter", false);
 
         SmartDashboard.setDefaultNumber("Wrist P-Value", WristSetpoints.wristP);
         SmartDashboard.setDefaultNumber("Wrist D-Value", WristSetpoints.wristD);
@@ -148,20 +121,21 @@ public class ElevatorSubsystem extends SubsystemBase {
     }
 
         /**
-         * Drive the arm and elevator motors to their respective setpoints. This will use MAXMotion
+         * Drive the wrist and elevator motors to their respective setpoints. This will use MAXMotion
          * position control which will allow for a smooth acceleration and deceleration to the mechanisms'
          * setpoints.
          */
         private void moveToSetpoint() {
-            double targetDegrees = wristCurrentTarget * 360 / 9 + 90;
-
+            /*double targetDegrees = wristCurrentTarget * 360 / 9 + 90;
             double ffOutput = wristFF.calculate(Math.toRadians(targetDegrees),0);
-            //double ffOutput = wristFF.calculate(90,0);
-            
-            elevatorClosedLoopController.setReference(elevatorCurrentTarget, ControlType.kMAXMotionPositionControl);
+            double ffOutput = wristFF.calculate(90,0);
+            wristClosedLoopController.setReference(wristCurrentTarget, ControlType.kMAXMotionPositionControl, ClosedLoopSlot.kSlot0, ffOutput);
+            wristClosedLoopController.setReference(wristCurrentTarget, ControlType.kPosition, ClosedLoopSlot.kSlot0, ffOutput);*/
+
             wristClosedLoopController.setReference(wristCurrentTarget, ControlType.kMAXMotionPositionControl);
-            //wristClosedLoopController.setReference(wristCurrentTarget, ControlType.kMAXMotionPositionControl, ClosedLoopSlot.kSlot0, ffOutput);
-            //wristClosedLoopController.setReference(wristCurrentTarget, ControlType.kPosition, ClosedLoopSlot.kSlot0, ffOutput);
+            elevatorClosedLoopController.setReference(elevatorCurrentTarget, ControlType.kMAXMotionPositionControl);
+            
+
         }
     
         /** Zero the elevator encoder when the limit switch is pressed. */
@@ -294,18 +268,20 @@ public class ElevatorSubsystem extends SubsystemBase {
         zeroElevatorOnLimitSwitch();
         zeroOnUserButton();
 
-        ElevatorSetpoints.kDriverInput = SmartDashboard.getNumber("Elevator Driver Input", 0);
-        WristSetpoints.kWDriverInput = SmartDashboard.getNumber("Wrist Driver Input", 0);
+        if(SmartDashboard.getBoolean("Driver Input Enter", true)){
+            ElevatorSetpoints.kDriverInput = SmartDashboard.getNumber("Elevator Driver Input", 0);
+            WristSetpoints.kWDriverInput = SmartDashboard.getNumber("Wrist Driver Input", 0);
+        }
 
         if(SmartDashboard.getBoolean("PID Enter", true)){
-        WristSetpoints.wristP = SmartDashboard.getNumber("Wrist P-Value", WristSetpoints.wristP);
-        WristSetpoints.wristD = SmartDashboard.getNumber("Wrist D-Value", WristSetpoints.wristD);
-        ElevatorSetpoints.kElevatorP = SmartDashboard.getNumber("Elevator P-Value", ElevatorSetpoints.kElevatorP);
-        ElevatorSetpoints.kElevatorD = SmartDashboard.getNumber("Elevator D-Value", ElevatorSetpoints.kElevatorD);
+            WristSetpoints.wristP = SmartDashboard.getNumber("Wrist P-Value", WristSetpoints.wristP);
+            WristSetpoints.wristD = SmartDashboard.getNumber("Wrist D-Value", WristSetpoints.wristD);
+            ElevatorSetpoints.kElevatorP = SmartDashboard.getNumber("Elevator P-Value", ElevatorSetpoints.kElevatorP);
+            ElevatorSetpoints.kElevatorD = SmartDashboard.getNumber("Elevator D-Value", ElevatorSetpoints.kElevatorD);
 
-        /*WristSetpoints.wristkG = SmartDashboard.getNumber("Wrist kG", WristSetpoints.wristkG);
-        WristSetpoints.wristkV = SmartDashboard.getNumber("Wrist kV", WristSetpoints.wristkV);
-        WristSetpoints.wristkS = SmartDashboard.getNumber("Wrist kS", WristSetpoints.wristkS);*/
+            /*WristSetpoints.wristkG = SmartDashboard.getNumber("Wrist kG", WristSetpoints.wristkG);
+            WristSetpoints.wristkV = SmartDashboard.getNumber("Wrist kV", WristSetpoints.wristkV);
+            WristSetpoints.wristkS = SmartDashboard.getNumber("Wrist kS", WristSetpoints.wristkS);*/
         }
     
         // Display subsystem values
@@ -322,55 +298,5 @@ public class ElevatorSubsystem extends SubsystemBase {
         
         SmartDashboard.putNumber("Intake/Applied Output", intakeMotor.getAppliedOutput());
     
-        /*// Update mechanism2d
-        m_elevatorMech2d.setLength(
-            SimulationRobotConstants.kPixelsPerMeter * SimulationRobotConstants.kMinElevatorHeightMeters
-                + SimulationRobotConstants.kPixelsPerMeter
-                    * (elevatorEncoder.getPosition() / SimulationRobotConstants.kElevatorGearing)
-                    * (SimulationRobotConstants.kElevatorDrumRadius * 2.0 * Math.PI));
-        m_armMech2d.setAngle(
-            180
-                - ( // mirror the angles so they display in the correct direction
-                Units.radiansToDegrees(SimulationRobotConstants.kMinAngleRads)
-                    + Units.rotationsToDegrees(
-                        armEncoder.getPosition() / SimulationRobotConstants.kArmReduction))
-                - 90 // subtract 90 degrees to account for the elevator
-            );*/
         }
-    
-        /** Get the current drawn by each simulation physics model */
-        /*public double getSimulationCurrentDraw() {
-        return m_elevatorSim.getCurrentDrawAmps() + m_armSim.getCurrentDrawAmps();
-        }*/
-    
-        /*@Override
-        public void simulationPeriodic() {
-        // In this method, we update our simulation of what our elevator is doing
-        // First, we set our "inputs" (voltages)
-        m_elevatorSim.setInput(elevatorMotor.getAppliedOutput() * RobotController.getBatteryVoltage());
-        m_armSim.setInput(armMotor.getAppliedOutput() * RobotController.getBatteryVoltage());
-    
-        // Update sim limit switch
-        elevatorLimitSwitchSim.setPressed(m_elevatorSim.getPositionMeters() == 0);
-    
-        // Next, we update it. The standard loop time is 20ms.
-        m_elevatorSim.update(0.020);
-        m_armSim.update(0.020);
-    
-        // Iterate the elevator and arm SPARK simulations
-        elevatorMotorSim.iterate(
-            ((m_elevatorSim.getVelocityMetersPerSecond()
-                        / (SimulationRobotConstants.kElevatorDrumRadius * 2.0 * Math.PI))
-                    * SimulationRobotConstants.kElevatorGearing)
-                * 60.0,
-            RobotController.getBatteryVoltage(),
-            0.02);
-        armMotorSim.iterate(
-            Units.radiansPerSecondToRotationsPerMinute(
-                m_armSim.getVelocityRadPerSec() * SimulationRobotConstants.kArmReduction),
-            RobotController.getBatteryVoltage(),
-            0.02);
-    
-        // SimBattery is updated in Robot.java
-        }*/
 }
