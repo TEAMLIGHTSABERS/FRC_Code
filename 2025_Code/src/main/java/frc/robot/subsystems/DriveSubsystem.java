@@ -184,6 +184,16 @@ public class DriveSubsystem extends SubsystemBase {
     m_rearRight.setDesiredState(swerveModuleStates[3]);
   }
 
+  // Function to apply deadband and cubic scaling
+      public double applyDeadbandAndCurve(double input, double deadband, double exponent) {
+        if (Math.abs(input) < deadband) {
+            return 0;
+        }
+        double scaledInput = (Math.abs(input) - deadband) / (1.0 - deadband);
+        scaledInput = Math.pow(scaledInput, exponent);
+        return Math.copySign(scaledInput, input);
+      }
+
   /** Sets the wheels into an X formation to prevent movement. */
   public Command setXCommand() {
     return this.run(

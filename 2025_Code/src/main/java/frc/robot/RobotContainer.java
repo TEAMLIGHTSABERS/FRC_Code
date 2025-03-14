@@ -21,6 +21,7 @@ import frc.robot.subsystems.DriveSubsystem;
 import frc.robot.subsystems.ElevatorSubsystem;
 import frc.robot.subsystems.ElevatorSubsystem.Setpoint;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
+import edu.wpi.first.math.geometry.Translation2d;
 
 import com.fasterxml.jackson.databind.util.Named;
 import com.pathplanner.lib.auto.AutoBuilder;
@@ -39,6 +40,8 @@ public class RobotContainer {
   private final DriveSubsystem m_robotDrive = new DriveSubsystem();
   private final ElevatorSubsystem m_elevatorSubsystem = new ElevatorSubsystem();
   private final ClimbSubsystem m_climbSubsystem = new ClimbSubsystem();
+ 
+
   
   // A chooser for autonomous commands
   //SendableChooser<Command> m_chooser = new SendableChooser<>();
@@ -72,7 +75,7 @@ public class RobotContainer {
     configureButtonBindings();
 
     // Configure default commands
-    m_robotDrive.setDefaultCommand(
+    /*m_robotDrive.setDefaultCommand(
         // The left stick controls translation of the robot.
         // Turning is controlled by the X axis of the right stick.
         new RunCommand(
@@ -82,7 +85,20 @@ public class RobotContainer {
                     -MathUtil.applyDeadband(m_driverController.getLeftX(), OIConstants.kDriveDeadband),
                     -MathUtil.applyDeadband(m_driverController.getRightX(), OIConstants.kDriveDeadband),
                     true),
-                    m_robotDrive));  
+                    m_robotDrive));*/
+                    
+    // Configure default commands
+      m_robotDrive.setDefaultCommand(
+      // The left stick controls translation of the robot.
+      // Turning is controlled by the X axis of the right stick.
+      new RunCommand(
+          () ->
+              m_robotDrive.drive(
+                  -m_robotDrive.applyDeadbandAndCurve(m_driverController.getLeftY(), OIConstants.kDriveDeadband, OIConstants.kDriveExponent),
+                  -m_robotDrive.applyDeadbandAndCurve(m_driverController.getLeftX(), OIConstants.kDriveDeadband, OIConstants.kDriveExponent),
+                  -m_robotDrive.applyDeadbandAndCurve(m_driverController.getRightX(), OIConstants.kDriveDeadband, OIConstants.kDriveExponent),
+                  true),
+                  m_robotDrive));
   }
 
   /**
@@ -120,32 +136,14 @@ public class RobotContainer {
     m_driverController.rightTrigger(OIConstants.kTriggerButtonThreshold)
       .onTrue(m_elevatorSubsystem.setSetpointCommand(Setpoint.kFeederStation));
 
-    // Left Bumper -> Wrist to Driver Input
-    m_driverController.leftBumper().onTrue(m_elevatorSubsystem.setSetpointCommand(Setpoint.kDriverInput));
-
-    // X Button -> Climb UP
-    m_driverController.x().whileTrue(m_climbSubsystem.climbUpCommand());
+    // X Button -> Driver Input
+    m_driverController.x().onTrue(m_elevatorSubsystem.setSetpointCommand(Setpoint.kDriverInput));
 
     // Left Trigger -> Climb Down
     m_driverController.leftTrigger(OIConstants.kTriggerButtonThreshold).whileTrue(m_climbSubsystem.climbDownCommand());
 
-    /**Extra Button Commands
-      // Right Bumper -> Elevator to Driver Input
-    //m_driverController.rightBumper().onTrue(m_elevatorSubsystem.setSetpointCommand(Setpoint.kDriverInput));
-
-    // Right Trigger  -> Wrist to Driver Input
-    //m_driverController.rightTrigger(OIConstants.kTriggerButtonThreshold).whileTrue(m_elevatorSubsystem.setSetpointCommand((Setpoint.kDriverInput)));
-
-    // Left Bumper -> Run tube intake
-    //m_driverController.leftBumper().whileTrue(m_elevatorSubsystem.forwardIntakeCommand());
-
-    // Left Trigger -> Run ball intake in reverse, set to stow when idle
-    //m_driverController.leftTrigger(OIConstants.kTriggerButtonThreshold).whileTrue(m_elevatorSubsystem.reverseIntakeCommand());
-
-    // B Button -> Elevator/Wrist to human player position, set ball intake to stow
-    // when idle    
-    //m_driverController
-    //    .b().onTrue(m_elevatorSubsystem.setSetpointCommand(Setpoint.kFeederStation));*/
+    // Left Bumper -> Climb Up
+    m_driverController.leftBumper().whileTrue(m_climbSubsystem.climbUpCommand());
 
     autoChooser = AutoBuilder.buildAutoChooser();
     ShuffleboardTab autoTab = Shuffleboard.getTab("Auto");
