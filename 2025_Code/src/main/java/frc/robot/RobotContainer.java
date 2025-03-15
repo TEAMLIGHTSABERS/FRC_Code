@@ -8,19 +8,20 @@ import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
 import edu.wpi.first.wpilibj2.command.Command;
-
 import edu.wpi.first.wpilibj2.command.RunCommand;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
+import frc.robot.Constants.AprilTagConstants;
 import frc.robot.Constants.OIConstants;
 import frc.robot.Constants.ElevatorSubsystemConstants.IntakeSetpoints;
 import frc.robot.subsystems.ClimbSubsystem;
 import frc.robot.subsystems.DriveSubsystem;
 import frc.robot.subsystems.ElevatorSubsystem;
-
+import frc.robot.subsystems.VisionSubsystem;
 import frc.robot.subsystems.ElevatorSubsystem.Setpoint;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
+import edu.wpi.first.math.geometry.Translation2d;
 import com.pathplanner.lib.auto.AutoBuilder;
 import com.pathplanner.lib.auto.NamedCommands;
 
@@ -37,10 +38,14 @@ public class RobotContainer {
   private final DriveSubsystem m_robotDrive = new DriveSubsystem();
   private final ElevatorSubsystem m_elevatorSubsystem = new ElevatorSubsystem();
   private final ClimbSubsystem m_climbSubsystem = new ClimbSubsystem();
+  private final VisionSubsystem m_VisionSubsystem = new VisionSubsystem();
  
   // A chooser for autonomous commands
   //SendableChooser<Command> m_chooser = new SendableChooser<>();
   private static SendableChooser<Command> autoChooser;
+
+  private Translation2d RightOffset = new Translation2d(AprilTagConstants.kXATright, AprilTagConstants.kYAT);
+  private Translation2d LeftOffset = new Translation2d(AprilTagConstants.kXATleft, AprilTagConstants.kYAT);
   
   // The driver's controller
   CommandXboxController m_driverController =
@@ -139,7 +144,30 @@ public class RobotContainer {
               
     new Trigger(() -> m_driverController.b().getAsBoolean() && m_driverController.leftTrigger(OIConstants.kTriggerButtonThreshold).getAsBoolean())
     .onTrue(m_elevatorSubsystem.setSetpointCommand(Setpoint.kAlgae2));
-    
+
+    // Right Stick Button -> Move to right reef relative to the April Tag
+    m_driverController.rightStick().onTrue(
+      new RunCommand (() -> 
+      {if (!m_VisionSubsystem.isAtTarget(RightOffset)) {
+        m_VisionSubsystem.moveToAprilTag(RightOffset);
+      } else {
+        m_VisionSubsystem.stop();
+        }
+      })
+    );
+
+    // Left Stick Button -> Move to left reef relative to the April Tag
+    m_driverController.leftStick().onTrue(
+      new RunCommand (() -> 
+      {if (!m_VisionSubsystem.isAtTarget(LeftOffset)) {
+        m_VisionSubsystem.moveToAprilTag(LeftOffset);
+      } else {
+        m_VisionSubsystem.stop();
+        }
+      })
+    );
+
+
     autoChooser = AutoBuilder.buildAutoChooser();
     ShuffleboardTab autoTab = Shuffleboard.getTab("Auto");
     autoTab.add(autoChooser).withPosition(1,1);
