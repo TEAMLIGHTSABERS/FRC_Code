@@ -11,22 +11,40 @@
               {
                 "type": "path",
                 "data": {
-                  "pathName": "Pos 2 Path"
+                  "pathName": "Blue Center Path"
                 }
               },
               {
                 "type": "named",
                 "data": {
-                  "name": "Level 2"
+                  "name": "Level 4"
                 }
               }
             ]
           }
         },
         {
+          "type": "wait",
+          "data": {
+            "waitTime": 1.5
+          }
+        },
+        {
           "type": "named",
           "data": {
             "name": "Coral Out"
+          }
+        },
+        {
+          "type": "wait",
+          "data": {
+            "waitTime": 1.0
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "Coral Station"
           }
         }
       ]
