@@ -35,12 +35,13 @@ public final class Constants {
         public static final double kAlgae1 = 0;
         public static final double kAlgae2 = 15;
         public static double kDriverInput = 0;
+        
         public static double kElevatorP = 0.01;
         public static double kElevatorD = 0;
       }
 
       public static final class WristSetpoints{
-        public static final double kWFeederStation = -7.5;
+        public static double kWFeederStation = -7.5;
         public static final double kWLevel1 = 0;
         public static final double kWLevel2 = -12;
         public static final double kWLevel3 = -12;
@@ -50,13 +51,10 @@ public final class Constants {
         
         public static double wristP = 0.25;
         public static double wristD = 0.005;
-        public static double wristkG = 0.96;
-        public static double wristkV = 0.18;
-        public static double wristkA = 0.02;
-        public static double wristkS  = 0.45;
       }
 
       public static final class IntakeSetpoints{
+        public static final double kAlgae = 1.0;
         public static final double kForward = 0.5;
         public static final double kL4Forward = 0.5;
         public static final double kReverse = -0.5;

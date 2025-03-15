@@ -4,16 +4,15 @@
 
 package frc.robot;
 
-import edu.wpi.first.math.MathUtil;
-import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
 import edu.wpi.first.wpilibj2.command.Command;
-import edu.wpi.first.wpilibj2.command.Commands;
+
 import edu.wpi.first.wpilibj2.command.RunCommand;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
+import edu.wpi.first.wpilibj2.command.button.Trigger;
 import frc.robot.Constants.OIConstants;
 import frc.robot.Constants.ElevatorSubsystemConstants.IntakeSetpoints;
 import frc.robot.subsystems.ClimbSubsystem;
@@ -21,9 +20,7 @@ import frc.robot.subsystems.DriveSubsystem;
 import frc.robot.subsystems.ElevatorSubsystem;
 import frc.robot.subsystems.ElevatorSubsystem.Setpoint;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
-import edu.wpi.first.math.geometry.Translation2d;
 
-import com.fasterxml.jackson.databind.util.Named;
 import com.pathplanner.lib.auto.AutoBuilder;
 import com.pathplanner.lib.auto.NamedCommands;
 
@@ -41,8 +38,6 @@ public class RobotContainer {
   private final ElevatorSubsystem m_elevatorSubsystem = new ElevatorSubsystem();
   private final ClimbSubsystem m_climbSubsystem = new ClimbSubsystem();
  
-
-  
   // A chooser for autonomous commands
   //SendableChooser<Command> m_chooser = new SendableChooser<>();
   private static SendableChooser<Command> autoChooser;
@@ -108,12 +103,7 @@ public class RobotContainer {
    * {@link JoystickButton}.
    */
   private void configureButtonBindings() {
-
-    // Right Stick Button -> drive to April tag
-    /*if(m_driverController.rightStick()){
-
-    }*/
-    
+ 
     // Left Stick Button -> Set swerve to X
     m_driverController.leftStick().whileTrue(m_robotDrive.setXCommand());
 
@@ -129,12 +119,11 @@ public class RobotContainer {
     // Y Button -> Elevator/Wrist to level 4 position
     m_driverController.y().onTrue(m_elevatorSubsystem.setSetpointCommand(Setpoint.kLevel4));
 
-    // Right Bumper -> Run tube intake
+    // Right Bumper -> Run Coral intake
     m_driverController.rightBumper().whileTrue(m_elevatorSubsystem.runIntakeCommand()).onFalse(m_elevatorSubsystem.setSetpointCommand(Setpoint.kFeederStation));
 
     // Right Trigger  -> Elevator/Wrist to human player position
-    m_driverController.rightTrigger(OIConstants.kTriggerButtonThreshold)
-      .onTrue(m_elevatorSubsystem.setSetpointCommand(Setpoint.kFeederStation));
+    m_driverController.rightTrigger(OIConstants.kTriggerButtonThreshold).onTrue(m_elevatorSubsystem.setSetpointCommand(Setpoint.kFeederStation));
 
     // X Button -> Driver Input
     m_driverController.x().onTrue(m_elevatorSubsystem.setSetpointCommand(Setpoint.kDriverInput));
@@ -145,6 +134,12 @@ public class RobotContainer {
     // Left Bumper -> Climb Up
     m_driverController.leftBumper().whileTrue(m_climbSubsystem.climbUpCommand());
 
+    new Trigger(() -> m_driverController.a().getAsBoolean() && m_driverController.leftTrigger(OIConstants.kTriggerButtonThreshold).getAsBoolean())
+    .onTrue(m_elevatorSubsystem.setSetpointCommand(Setpoint.kAlgae1));
+              
+    new Trigger(() -> m_driverController.b().getAsBoolean() && m_driverController.leftTrigger(OIConstants.kTriggerButtonThreshold).getAsBoolean())
+    .onTrue(m_elevatorSubsystem.setSetpointCommand(Setpoint.kAlgae2));
+    
     autoChooser = AutoBuilder.buildAutoChooser();
     ShuffleboardTab autoTab = Shuffleboard.getTab("Auto");
     autoTab.add(autoChooser).withPosition(1,1);
