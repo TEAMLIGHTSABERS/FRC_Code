@@ -18,9 +18,9 @@ import frc.robot.Constants.ElevatorSubsystemConstants.IntakeSetpoints;
 import frc.robot.subsystems.ClimbSubsystem;
 import frc.robot.subsystems.DriveSubsystem;
 import frc.robot.subsystems.ElevatorSubsystem;
+
 import frc.robot.subsystems.ElevatorSubsystem.Setpoint;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
-
 import com.pathplanner.lib.auto.AutoBuilder;
 import com.pathplanner.lib.auto.NamedCommands;
 
@@ -58,7 +58,7 @@ public class RobotContainer {
     
     NamedCommands.registerCommand("Coral In", m_elevatorSubsystem.autoIntakeCommand(IntakeSetpoints.kReverse, 2.0));
     NamedCommands.registerCommand("Coral Out", m_elevatorSubsystem.autoIntakeCommand(IntakeSetpoints.kForward, 2.0));
-    
+        
     /*autoChooser = AutoBuilder.buildAutoChooser();
     ShuffleboardTab autoTab = Shuffleboard.getTab("Auto");
     autoTab.add(autoChooser).withPosition(1,1);*/
@@ -105,7 +105,7 @@ public class RobotContainer {
   private void configureButtonBindings() {
  
     // Left Stick Button -> Set swerve to X
-    m_driverController.leftStick().whileTrue(m_robotDrive.setXCommand());
+    //m_driverController.leftStick().whileTrue(m_robotDrive.setXCommand());
 
     // Start Button -> Zero swerve heading
     m_driverController.start().onTrue(m_robotDrive.zeroHeadingCommand());

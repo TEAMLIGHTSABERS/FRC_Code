@@ -38,6 +38,7 @@ public class Robot extends TimedRobot {
     m_robotContainer = new RobotContainer();
 
     CameraServer.startAutomaticCapture(0);
+    CameraServer.startAutomaticCapture(1);
   
     // Start recording to data log
     DataLogManager.start();

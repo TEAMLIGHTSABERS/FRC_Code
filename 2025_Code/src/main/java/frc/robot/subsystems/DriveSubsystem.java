@@ -150,14 +150,14 @@ public class DriveSubsystem extends SubsystemBase {
   }
 
   // Function to apply deadband and cubic scaling
-      public double applyDeadbandAndCurve(double input, double deadband, double exponent) {
-        if (Math.abs(input) < deadband) {
-            return 0;
-        }
-        double scaledInput = (Math.abs(input) - deadband) / (1.0 - deadband);
-        scaledInput = Math.pow(scaledInput, exponent);
-        return Math.copySign(scaledInput, input);
-      }
+  public double applyDeadbandAndCurve(double input, double deadband, double exponent) {
+    if (Math.abs(input) < deadband) {
+        return 0;
+    }
+      double scaledInput = (Math.abs(input) - deadband) / (1.0 - deadband);
+      scaledInput = Math.pow(scaledInput, exponent);
+    return Math.copySign(scaledInput, input);
+  }
 
   /** Sets the wheels into an X formation to prevent movement. */
   public Command setXCommand() {
@@ -168,6 +168,10 @@ public class DriveSubsystem extends SubsystemBase {
           m_rearLeft.setDesiredState(new SwerveModuleState(0, Rotation2d.fromDegrees(-45)));
           m_rearRight.setDesiredState(new SwerveModuleState(0, Rotation2d.fromDegrees(45)));
         });
+  }
+
+  public void stop() {
+    drive(0, 0, 0, true);
   }
 
   /**
