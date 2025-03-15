@@ -30,19 +30,22 @@ public final class Constants {
         public static final int kFeederStation = 0;
         public static final int kLevel1 = 0;
         public static final double kLevel2 = 2;
-        public static final int kLevel3 = 19;
+        public static final int kLevel3 = 21;
         public static final double kLevel4 = 53;
+        public static final double kAlgae1 = 0;
+        public static final double kAlgae2 = 15;
         public static double kDriverInput = 0;
         public static double kElevatorP = 0.01;
         public static double kElevatorD = 0;
       }
 
       public static final class WristSetpoints{
-        public static final double kWFeederStation = -5.25;
+        public static final double kWFeederStation = -7.5;
         public static final double kWLevel1 = 0;
         public static final double kWLevel2 = -12;
         public static final double kWLevel3 = -12;
         public static final double kWLevel4 = -14.5; //Previous: -13.61
+        public static final double kWAlgae = -2;
         public static double kWDriverInput = 0;
         
         public static double wristP = 0.25;

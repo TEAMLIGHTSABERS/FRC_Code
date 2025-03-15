@@ -130,7 +130,7 @@ public class RobotContainer {
     m_driverController.y().onTrue(m_elevatorSubsystem.setSetpointCommand(Setpoint.kLevel4));
 
     // Right Bumper -> Run tube intake
-    m_driverController.rightBumper().whileTrue(m_elevatorSubsystem.runIntakeCommand());
+    m_driverController.rightBumper().whileTrue(m_elevatorSubsystem.runIntakeCommand()).onFalse(m_elevatorSubsystem.setSetpointCommand(Setpoint.kFeederStation));
 
     // Right Trigger  -> Elevator/Wrist to human player position
     m_driverController.rightTrigger(OIConstants.kTriggerButtonThreshold)

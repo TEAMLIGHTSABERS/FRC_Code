@@ -153,13 +153,14 @@ public class ElevatorSubsystem extends SubsystemBase {
          * setpoints.
          */
         private void moveToSetpoint() {
-            double targetDegrees = wristCurrentTarget * 360 / 9 + 90;
+            /*double targetDegrees = wristCurrentTarget * 360 / 9 + 90;
 
-            double ffOutput = wristFF.calculate(Math.toRadians(targetDegrees),0);
+            double ffOutput = wristFF.calculate(Math.toRadians(targetDegrees),0);*/
             //double ffOutput = wristFF.calculate(90,0);
             
-            elevatorClosedLoopController.setReference(elevatorCurrentTarget, ControlType.kMAXMotionPositionControl);
             wristClosedLoopController.setReference(wristCurrentTarget, ControlType.kMAXMotionPositionControl);
+            elevatorClosedLoopController.setReference(elevatorCurrentTarget, ControlType.kMAXMotionPositionControl);
+            
             //wristClosedLoopController.setReference(wristCurrentTarget, ControlType.kMAXMotionPositionControl, ClosedLoopSlot.kSlot0, ffOutput);
             //wristClosedLoopController.setReference(wristCurrentTarget, ControlType.kPosition, ClosedLoopSlot.kSlot0, ffOutput);
         }
