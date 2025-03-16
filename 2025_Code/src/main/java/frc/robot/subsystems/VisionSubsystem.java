@@ -15,35 +15,21 @@ public class VisionSubsystem extends SubsystemBase{
 
     private final String limelightName = "limelight";
     private final DriveSubsystem m_robotDrive = new DriveSubsystem();
-    private final HolonomicDriveController controller;
+    
+    PIDController xController = new PIDController(AutoConstants.kPXController, 0, 0);
+    PIDController yController = new PIDController(AutoConstants.kPYController, 0, 0);
+    PIDController thetaController = new PIDController(AutoConstants.kPThetaController, 0, 0);
 
-    private static final double POSITION_TOLERANCE = 0.05; // Meters
-    private static final double ANGLE_TOLERANCE = 2.0; // Degrees
+    private static final double TX_TOLERANCE = 1.0; // Degrees tolerance for left/right alignment
+    private static final double TY_TOLERANCE = 1.0; // Degrees tolerance for distance adjustment
+    private static final double ROTATION_TOLERANCE = 2.0; // Degrees tolerance for rotation
+
     //private Translation2d offset = new Translation2d(0.5, 0.5); // Default offset from AprilTag
 
         public VisionSubsystem(){
-            
-            PIDController xController = new PIDController(AutoConstants.kPXController, 0, 0);
-            PIDController yController = new PIDController(AutoConstants.kPYController, 0, 0);
-
-            var thetaController =
-                new ProfiledPIDController(
-                    AutoConstants.kPThetaController, 0, 0, AutoConstants.kThetaControllerConstraints);
-            
-            thetaController.enableContinuousInput(-Math.PI, Math.PI);
-
-            controller = new HolonomicDriveController(xController, yController, thetaController);
-        }
-
-        public Pose2d getAprilTagPose() {
-            double[] botpose = LimelightHelpers.getBotPose_wpiBlue(limelightName);
-            if (botpose.length < 6) return null;
-
-            double x = botpose[0]; // X Position in meters
-            double y = botpose[1]; // Y Position in meters
-            double rotation = botpose[5]; // Rotation in degrees
-
-            return new Pose2d(x, y, Rotation2d.fromDegrees(rotation));
+            xController.setTolerance(TX_TOLERANCE);
+            yController.setTolerance(TY_TOLERANCE);
+            thetaController.setTolerance(ROTATION_TOLERANCE);    
         }
 
         /*public void setOffset(Translation2d newOffset) {
@@ -51,27 +37,24 @@ public class VisionSubsystem extends SubsystemBase{
         }*/
 
         public void moveToAprilTag(Translation2d offset) {
-            Pose2d detectedPose = getAprilTagPose();
-            if (detectedPose == null) return;
+            double tx = LimelightHelpers.getTX(limelightName); // Left/Right error
+            double ty = LimelightHelpers.getTY(limelightName); // Up/Down error
 
-            // Calculate target position with offset
-            Translation2d targetTranslation = detectedPose.getTranslation().plus(offset);
-            Pose2d targetPose = new Pose2d(targetTranslation, detectedPose.getRotation());
+            if (Double.isNaN(tx) || Double.isNaN(ty)) return; // If no AprilTag is detected, don't move
 
-            // Compute speeds using HolonomicDriveController
-            var speeds = controller.calculate(detectedPose, targetPose, 0, targetPose.getRotation());
+            // Convert TX and TY to a distance-based movement by applying the offset
+            double targetX = offset.getX(); // Move backward by offset X
+            double targetY = offset.getY();  // Move right by offset Y
 
-            m_robotDrive.drive(speeds.vxMetersPerSecond, speeds.vyMetersPerSecond, speeds.omegaRadiansPerSecond, false);
+            double xSpeed = xController.calculate(tx, targetX); // Move left/right
+            double ySpeed = yController.calculate(ty, targetY); // Move forward/backward
+            double rotationSpeed = thetaController.calculate(tx, 0); // Rotate to face the tag
+
+            m_robotDrive.drive(xSpeed, ySpeed, rotationSpeed, false);
         }
 
-        public boolean isAtTarget(Translation2d offset) {
-            Pose2d currentPose = getAprilTagPose();
-            if (currentPose == null) return false;
-
-            double distance = currentPose.getTranslation().getDistance(currentPose.getTranslation().plus(offset));
-            double angleError = Math.abs(currentPose.getRotation().minus(currentPose.getRotation()).getDegrees());
-
-            return distance < POSITION_TOLERANCE && angleError < ANGLE_TOLERANCE;
+        public boolean isAtTarget() {
+            return xController.atSetpoint() && yController.atSetpoint() && thetaController.atSetpoint();
         }
 
         public void stop() {

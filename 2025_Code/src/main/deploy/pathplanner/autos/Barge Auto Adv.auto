@@ -11,7 +11,7 @@
               {
                 "type": "path",
                 "data": {
-                  "pathName": "Blue Left Path"
+                  "pathName": "Barge Path"
                 }
               },
               {
@@ -45,6 +45,18 @@
           "type": "named",
           "data": {
             "name": "Coral Station"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "Barge Reef to CS"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "Coral In"
           }
         }
       ]

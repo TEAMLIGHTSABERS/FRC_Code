@@ -146,9 +146,9 @@ public class RobotContainer {
     .onTrue(m_elevatorSubsystem.setSetpointCommand(Setpoint.kAlgae2));
 
     // Right Stick Button -> Move to right reef relative to the April Tag
-    m_driverController.rightStick().onTrue(
+    m_driverController.rightStick().whileTrue(
       new RunCommand (() -> 
-      {if (!m_VisionSubsystem.isAtTarget(RightOffset)) {
+      {if (!m_VisionSubsystem.isAtTarget()) {
         m_VisionSubsystem.moveToAprilTag(RightOffset);
       } else {
         m_VisionSubsystem.stop();
@@ -157,9 +157,9 @@ public class RobotContainer {
     );
 
     // Left Stick Button -> Move to left reef relative to the April Tag
-    m_driverController.leftStick().onTrue(
+    m_driverController.leftStick().whileTrue(
       new RunCommand (() -> 
-      {if (!m_VisionSubsystem.isAtTarget(LeftOffset)) {
+      {if (!m_VisionSubsystem.isAtTarget()) {
         m_VisionSubsystem.moveToAprilTag(LeftOffset);
       } else {
         m_VisionSubsystem.stop();

@@ -72,7 +72,7 @@ public final class Constants {
 
   public static final class AprilTagConstants {
     public static double kXATright = 0.5; //X offset (to the right?) from AprilTag in meters
-    public static double kXATleft  = 0.5; //X offset (to the left?) from AprilTag in meters
+    public static double kXATleft  = -0.5; //X offset (to the left?) from AprilTag in meters
     public static double kYAT = 0.5; //Y offset from AprilTag in meters
   }
   
