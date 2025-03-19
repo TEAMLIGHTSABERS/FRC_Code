@@ -38,14 +38,14 @@ public class RobotContainer {
   private final DriveSubsystem m_robotDrive = new DriveSubsystem();
   private final ElevatorSubsystem m_elevatorSubsystem = new ElevatorSubsystem();
   private final ClimbSubsystem m_climbSubsystem = new ClimbSubsystem();
-  private final VisionSubsystem m_VisionSubsystem = new VisionSubsystem();
+  //private final VisionSubsystem m_VisionSubsystem = new VisionSubsystem(m_robotDrive);
  
   // A chooser for autonomous commands
   //SendableChooser<Command> m_chooser = new SendableChooser<>();
   private static SendableChooser<Command> autoChooser;
 
-  private Translation2d RightOffset = new Translation2d(AprilTagConstants.kXATright, AprilTagConstants.kYAT);
-  private Translation2d LeftOffset = new Translation2d(AprilTagConstants.kXATleft, AprilTagConstants.kYAT);
+  //private Translation2d RightOffset = new Translation2d(AprilTagConstants.kXATright, AprilTagConstants.kYAT);
+  //private Translation2d LeftOffset = new Translation2d(AprilTagConstants.kXATleft, AprilTagConstants.kYAT);
   
   // The driver's controller
   CommandXboxController m_driverController =
@@ -110,7 +110,7 @@ public class RobotContainer {
   private void configureButtonBindings() {
  
     // Left Stick Button -> Set swerve to X
-    //m_driverController.leftStick().whileTrue(m_robotDrive.setXCommand());
+    m_driverController.leftStick().whileTrue(m_robotDrive.setXCommand());
 
     // Start Button -> Zero swerve heading
     m_driverController.start().onTrue(m_robotDrive.zeroHeadingCommand());
@@ -127,26 +127,35 @@ public class RobotContainer {
     // Right Bumper -> Run Coral intake
     m_driverController.rightBumper().whileTrue(m_elevatorSubsystem.runIntakeCommand()).onFalse(m_elevatorSubsystem.setSetpointCommand(Setpoint.kFeederStation));
 
-    // Right Trigger  -> Elevator/Wrist to human player position
-    m_driverController.rightTrigger(OIConstants.kTriggerButtonThreshold).onTrue(m_elevatorSubsystem.setSetpointCommand(Setpoint.kFeederStation));
+    // Right Trigger  -> Elevator/Wrist to human player position (Obsolete due to Intake on Flase sends system to Coral Station position)
+    //m_driverController.rightTrigger(OIConstants.kTriggerButtonThreshold).onTrue(m_elevatorSubsystem.setSetpointCommand(Setpoint.kFeederStation));
 
     // X Button -> Driver Input
     m_driverController.x().onTrue(m_elevatorSubsystem.setSetpointCommand(Setpoint.kDriverInput));
 
-    // Left Trigger -> Climb Down
-    m_driverController.leftTrigger(OIConstants.kTriggerButtonThreshold).whileTrue(m_climbSubsystem.climbDownCommand());
+    // Left Trigger and Left Bumper -> Climb Down
+    new Trigger (() -> m_driverController.x().getAsBoolean() && m_driverController.leftTrigger(OIConstants.kTriggerButtonThreshold).getAsBoolean())
+              .whileTrue(m_climbSubsystem.climbDownCommand());
 
     // Left Bumper -> Climb Up
     m_driverController.leftBumper().whileTrue(m_climbSubsystem.climbUpCommand());
 
+    /* Algae Commands */
+    // A button and Left Trigger sets wrist and elevator to Lower Algae position
     new Trigger(() -> m_driverController.a().getAsBoolean() && m_driverController.leftTrigger(OIConstants.kTriggerButtonThreshold).getAsBoolean())
-    .onTrue(m_elevatorSubsystem.setSetpointCommand(Setpoint.kAlgae1));
-              
+              .onTrue(m_elevatorSubsystem.setSetpointCommand(Setpoint.kAlgae1));
+    
+    // B button and Left Trigger sets wrist and elevator to Lower Algae position          
     new Trigger(() -> m_driverController.b().getAsBoolean() && m_driverController.leftTrigger(OIConstants.kTriggerButtonThreshold).getAsBoolean())
-    .onTrue(m_elevatorSubsystem.setSetpointCommand(Setpoint.kAlgae2));
+              .onTrue(m_elevatorSubsystem.setSetpointCommand(Setpoint.kAlgae2));
 
+    // Right Trigger runs the intake to dislodge the Algae
+    m_driverController.rightTrigger(OIConstants.kTriggerButtonThreshold).whileTrue(m_elevatorSubsystem.runIntakeCommand());
+
+
+    /* Auto driving using the Limelight */
     // Right Stick Button -> Move to right reef relative to the April Tag
-    m_driverController.rightStick().whileTrue(
+    /*m_driverController.rightStick().whileTrue(
       new RunCommand (() -> 
       {if (!m_VisionSubsystem.isAtTarget()) {
         m_VisionSubsystem.moveToAprilTag(RightOffset);
@@ -165,7 +174,7 @@ public class RobotContainer {
         m_VisionSubsystem.stop();
         }
       })
-    );
+    );*/
 
 
     autoChooser = AutoBuilder.buildAutoChooser();

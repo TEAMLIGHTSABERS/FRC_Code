@@ -46,7 +46,7 @@ public final class Constants {
         public static final double kWLevel2 = -12;
         public static final double kWLevel3 = -12;
         public static final double kWLevel4 = -14.5; //Previous: -13.61
-        public static final double kWAlgae = -2;
+        public static final double kWAlgae = -4;
         public static double kWDriverInput = 0;
         
         public static double wristP = 0.25;
@@ -54,7 +54,7 @@ public final class Constants {
       }
 
       public static final class IntakeSetpoints{
-        public static final double kAlgae = 1.0;
+        public static final double kAlgae = -1.0;
         public static final double kForward = 0.5;
         public static final double kL4Forward = 0.5;
         public static final double kReverse = -0.5;
@@ -71,9 +71,10 @@ public final class Constants {
   }
 
   public static final class AprilTagConstants {
-    public static double kXATright = 0.5; //X offset (to the right?) from AprilTag in meters
-    public static double kXATleft  = -0.5; //X offset (to the left?) from AprilTag in meters
-    public static double kYAT = 0.5; //Y offset from AprilTag in meters
+    public static double kXATright = 21; //X offset (to the right?) from AprilTag in degrees
+    public static double kXATleft  = -21; //X offset (to the left?) from AprilTag in degrees
+    public static double kXAT = 21; //X offset from the ArpilTag in degrees
+    public static double kYAT = -9; //Y offset from AprilTag in degrees
   }
   
   public static final class DriveConstants {
